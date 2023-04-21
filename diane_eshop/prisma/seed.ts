@@ -7,10 +7,10 @@ async function main() {
   // create admin
   console.log('seeding admin table');
   await prisma.admin.upsert({
-    where: { email: 'vanbutselediane@gmail.com' },
+    where: { email: process.env.ADMIN_MAIL as string },
     update: {},
     create: {
-      email: 'vanbutselediane@gmail.com',
+      email: process.env.ADMIN_MAIL as string,
       password: hashPassword(process.env.ADMIN_PASS as string),
     },
   });

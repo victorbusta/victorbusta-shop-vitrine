@@ -10,7 +10,7 @@ export class SendGridService {
   async send(to: string, orderId: number, token: string) {
     const msg = {
       to,
-      from: 'noreply.vanbutselediane@gmail.com',
+      from: process.env.SENDGRID_EMAIL as string,
       subject: `Cofirmez votre commande n°${orderId}`,
       html: `<p>Click <a href=${process.env.APP_URL}order/${orderId}/verify?token=${token}>here</a> to verify your email address.</p>`,
     };

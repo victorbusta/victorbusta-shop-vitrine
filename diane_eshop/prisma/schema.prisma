@@ -1,0 +1,69 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  email    String @unique
+  password String
+}
+
+model Print {
+  id            Int       @id @default(autoincrement())
+  title         String
+  creation_date DateTime
+  added_date    DateTime  @default(now())
+  document      Document?
+
+  orders  Order[]
+  formats Format[]
+}
+
+model Document {
+  print_id Int   @unique
+  print    Print @relation(fields: [print_id], references: [id])
+
+  name     String
+  mimetype String
+  buffer   Bytes
+  size     Int
+}
+
+model Format {
+  id    Int    @id @default(autoincrement())
+  label String @unique
+  size  String @unique
+  price Int
+
+  print_id Int
+  print    Print @relation(fields: [print_id], references: [id])
+
+  orders Order[]
+}
+
+model Order {
+  id                  Int      @id @default(autoincrement())
+  order_date          DateTime @default(now())
+  customer_firstname  String
+  customer_lastname   String
+  customer_email      String
+  shipping_adress     String
+  shipping_postalcode String
+  shipping_city       String
+  shipping            Boolean
+  shipped             Boolean
+  validation_token    String?
+
+  print_id Int
+  print    Print @relation(fields: [print_id], references: [id])
+
+  format_id Int
+  format    Format @relation(fields: [format_id], references: [id])
+}

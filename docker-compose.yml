@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+
+  eshop_db:
+    container_name: eshop_db
+    image: postgres:13.5
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: db_eshop
+      PGDATA: /data/postgres_service
+    ports:
+      - '5433:5432'

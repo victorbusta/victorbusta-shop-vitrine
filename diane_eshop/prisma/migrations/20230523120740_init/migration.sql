@@ -47,10 +47,14 @@ CREATE TABLE "Order" (
     "shipping" BOOLEAN NOT NULL,
     "shipped" BOOLEAN NOT NULL,
     "validation_token" TEXT,
-    "print_id" INTEGER NOT NULL,
-    "format_id" INTEGER NOT NULL,
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "_FormatToOrder" (
+    "A" INTEGER NOT NULL,
+    "B" INTEGER NOT NULL
 );
 
 -- CreateIndex
@@ -60,10 +64,10 @@ CREATE UNIQUE INDEX "Admin_email_key" ON "Admin"("email");
 CREATE UNIQUE INDEX "Document_print_id_key" ON "Document"("print_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Format_label_key" ON "Format"("label");
+CREATE UNIQUE INDEX "_FormatToOrder_AB_unique" ON "_FormatToOrder"("A", "B");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Format_size_key" ON "Format"("size");
+CREATE INDEX "_FormatToOrder_B_index" ON "_FormatToOrder"("B");
 
 -- AddForeignKey
 ALTER TABLE "Document" ADD CONSTRAINT "Document_print_id_fkey" FOREIGN KEY ("print_id") REFERENCES "Print"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -72,7 +76,7 @@ ALTER TABLE "Document" ADD CONSTRAINT "Document_print_id_fkey" FOREIGN KEY ("pri
 ALTER TABLE "Format" ADD CONSTRAINT "Format_print_id_fkey" FOREIGN KEY ("print_id") REFERENCES "Print"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Order" ADD CONSTRAINT "Order_print_id_fkey" FOREIGN KEY ("print_id") REFERENCES "Print"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "_FormatToOrder" ADD CONSTRAINT "_FormatToOrder_A_fkey" FOREIGN KEY ("A") REFERENCES "Format"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Order" ADD CONSTRAINT "Order_format_id_fkey" FOREIGN KEY ("format_id") REFERENCES "Format"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "_FormatToOrder" ADD CONSTRAINT "_FormatToOrder_B_fkey" FOREIGN KEY ("B") REFERENCES "Order"("id") ON DELETE CASCADE ON UPDATE CASCADE;

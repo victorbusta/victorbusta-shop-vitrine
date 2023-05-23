@@ -9,9 +9,9 @@ import { Public } from 'src/public.decorator';
 export class FormatController {
   constructor(private readonly formatService: FormatService) {}
 
-  @Public()
-  @Post(':id/order')
-  createOrder(@Param('id') id: number, @Body() createOrderDto: CreateOrderDto) {
-    return this.formatService.createOrder(+id, createOrderDto);
-  }
+  // @Public()
+  // @Post(':id/order')
+  // createOrder(@Param('id') id: number, @Body() createOrderDto: CreateOrderDto) {
+  //   return this.formatService.createOrder(+id, createOrderDto);
+  // }
 }

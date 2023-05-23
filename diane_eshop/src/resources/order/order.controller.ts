@@ -1,8 +1,17 @@
-import { Controller, Get, Body, Patch, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Body,
+  Patch,
+  Param,
+  Query,
+  Post,
+} from '@nestjs/common';
 import { OrderService } from './order.service';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { Public } from 'src/public.decorator';
+import { CreateOrderDto } from './dto/create-order.dto';
 
 @ApiTags('orders')
 @Controller('order')
@@ -13,6 +22,12 @@ export class OrderController {
   @Get(':id/verify')
   verify(@Param('id') id: number, @Query('token') token: string) {
     return this.orderService.verify(+id, token);
+  }
+
+  @Public()
+  @Post()
+  create(@Body() createOrderDto: CreateOrderDto) {
+    return this.orderService.create(createOrderDto);
   }
 
   @ApiBearerAuth('JWT-auth')

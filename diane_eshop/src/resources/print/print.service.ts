@@ -1,5 +1,5 @@
 import { CreateFormatDto } from './../format/dto/create-format.dto';
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { CreatePrintDto } from './dto/create-print.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -12,15 +12,19 @@ export class PrintService {
   }
 
   createDocument(printId: number, file: Express.Multer.File) {
-    return this.prisma.document.create({
-      data: {
-        print_id: printId,
-        name: file.originalname,
-        mimetype: file.mimetype,
-        buffer: file.buffer,
-        size: file.size,
-      },
-    });
+    return this.prisma.document
+      .create({
+        data: {
+          print_id: printId,
+          name: file.originalname,
+          mimetype: file.mimetype,
+          buffer: file.buffer,
+          size: file.size,
+        },
+      })
+      .catch((e) => {
+        throw new HttpException("Can't add document", 401);
+      });
   }
 
   async createFormat(printId: number, createFormatDto: CreateFormatDto) {
@@ -36,11 +40,33 @@ export class PrintService {
       select: {
         id: true,
         title: true,
+      },
+    });
+  }
+
+  findOne(id: number) {
+    return this.prisma.print.findUnique({
+      where: { id: id },
+      select: {
+        id: true,
+        title: true,
         creation_date: true,
-        document: true,
         formats: true,
       },
     });
+  }
+
+  findPrintDocument(id: number) {
+    return this.prisma.print
+      .findUniqueOrThrow({
+        where: { id: id },
+        select: {
+          document: true,
+        },
+      })
+      .catch((e) => {
+        throw new HttpException('error displaying document', 401);
+      });
   }
 
   findOrders(id: number) {
@@ -52,7 +78,6 @@ export class PrintService {
             id: true,
             label: true,
             size: true,
-            orders: true,
           },
         },
       },

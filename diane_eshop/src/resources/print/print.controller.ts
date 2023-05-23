@@ -1,4 +1,3 @@
-import { CreateOrderDto } from './../order/dto/create-order.dto';
 import { CreateFormatDto } from './../format/dto/create-format.dto';
 import {
   Controller,
@@ -9,12 +8,15 @@ import {
   Delete,
   UploadedFile,
   UseInterceptors,
+  Res,
+  StreamableFile,
 } from '@nestjs/common';
 import { PrintService } from './print.service';
 import { CreatePrintDto } from './dto/create-print.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/public.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
+import type { Response } from 'express';
 
 @ApiTags('prints')
 @Controller('print')
@@ -50,6 +52,26 @@ export class PrintController {
   @Get()
   findAll() {
     return this.printService.findAll();
+  }
+
+  @Public()
+  @Get(':id')
+  findOne(@Param('id') id: number) {
+    return this.printService.findOne(+id);
+  }
+
+  @Public()
+  @Get(':id/document')
+  async findPrintDocument(
+    @Param('id') id: number,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<StreamableFile> {
+    const doc = await this.printService.findPrintDocument(+id);
+    res.set({
+      'Content-Type': doc.document?.mimetype,
+      'Content-Disposition': `attachment; filename="${doc.document?.name}"`,
+    });
+    return new StreamableFile(doc.document?.buffer as Buffer);
   }
 
   @ApiBearerAuth('JWT-auth')

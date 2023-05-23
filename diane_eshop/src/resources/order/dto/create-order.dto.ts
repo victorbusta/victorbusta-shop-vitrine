@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Format } from '@prisma/client';
 import { IsEmail } from 'class-validator';
+
 export class CreateOrderDto {
   @ApiProperty()
   customer_firstname: string;
@@ -20,11 +22,11 @@ export class CreateOrderDto {
   @ApiProperty()
   shipping_city: string;
 
+  @ApiProperty()
+  formats_id: number[];
+
   shipping: boolean;
   shipped: boolean;
 
   validation_token: string;
-
-  print_id: number;
-  format_id: number;
 }

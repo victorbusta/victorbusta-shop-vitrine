@@ -2,6 +2,7 @@
 import { useCheckoutStore } from '../store/checkoutStore';
 import { ref } from 'vue'
 import CheckoutableCard from '@/components/CheckoutableCard.vue';
+import ArrowIcon from '@/components/icons/IconArrow.vue';
 import type { FormField } from '@/interfaces/form';
 import { RouterLink } from 'vue-router'
 
@@ -28,9 +29,15 @@ const checkoutFields: FormField[] = [
         <hr>
       </div>
 
-      <RouterLink to="/customer" v-if="checkoutPrints.length !== 0">
-        <h2>Passer commande</h2>
-      </RouterLink>
+      <div class="bottomNav">
+        <RouterLink to="/" class="back">
+          <ArrowIcon style="width: 32px; height: 32px;" />
+        </RouterLink>
+        <RouterLink to="/customer" v-if="checkoutPrints.length !== 0">
+          <h2>Passer commande</h2>
+        </RouterLink>
+      </div>
+
     </div>
   </div>
 </template>
@@ -77,10 +84,24 @@ h2 {
   color: var(--color-foreground);
   font-size: var(--font-size-medium-medium);
   border: solid 1px var(--color-foreground);
+  width: fit-content;
 }
 
 h2:hover {
   color: var(--color-background);
   background-color: var(--color-foreground);
+}
+
+
+.bottomNav {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.back {
+  position: absolute;
+  left: 0;
 }
 </style>

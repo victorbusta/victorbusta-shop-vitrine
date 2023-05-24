@@ -23,7 +23,7 @@ export class CreateOrderDto {
   shipping_city: string;
 
   @ApiProperty()
-  formats_id: number[];
+  formats_id?: number[];
 
   shipping: boolean;
   shipped: boolean;

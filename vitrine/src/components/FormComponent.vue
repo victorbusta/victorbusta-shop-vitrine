@@ -3,6 +3,10 @@ import { ref } from 'vue';
 import type { PropType } from 'vue';
 import type { FormField } from '@/interfaces/form';
 import { useCheckoutStore } from '@/store/checkoutStore';
+import ArrowIcon from './icons/IconArrow.vue';
+import { HTTP } from '@/http';
+
+const checkoutStore = useCheckoutStore();
 
 const props = defineProps({
   fields: {
@@ -15,17 +19,21 @@ const props = defineProps({
   }
 });
 
-const checkoutStore = useCheckoutStore();
-
 const fields = ref<FormField[]>(props.fields);
 
 function handleSubmit() {
-  const formData: any = {};
+  let formData: any = {};
   fields.value.forEach((field) => {
     formData[field.id] = field.value;
   });
 
-  console.log(formData);
+  formData = {...formData, ...{formats_id: []}}
+
+  checkoutStore.prints.forEach(print => {
+    formData.formats_id.push(print.format.id);
+  });
+
+  console.log(JSON.stringify(formData));
 }
 </script>
 
@@ -35,13 +43,19 @@ function handleSubmit() {
     <div class="formInput" v-for="field in fields" :key="field.id">
       <input :type="field.type" :id="field.id" v-model="field.value" :placeholder="field.label"/>
       <hr>
-    </div>
+    </div> 
+  </form>
 
+  <hr style="width: 90%; margin: 16px 0;">
+
+  <div class="bottomNav">
+    <RouterLink to="/checkout" class="back">
+      <ArrowIcon style="width: 32px; height: 32px;" />
+    </RouterLink>
     <div class="order" @click="handleSubmit">
       <h2>Prise de commande</h2>
     </div>
-
-  </form>
+  </div>   
 
 </template>
 
@@ -92,5 +106,17 @@ form > div {
   display: flex;
   flex-direction: column;
   margin: 8px 4px;
+}
+
+.bottomNav {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.back {
+  position: absolute;
+  left: 0;
 }
 </style>

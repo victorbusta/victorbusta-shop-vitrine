@@ -35,24 +35,36 @@ export class OrderService {
     });
   }
 
-  create(createOrderDto: CreateOrderDto) {
+  async create(createOrderDto: CreateOrderDto) {
     const validationToken = uuidv4();
+    const formats = await this.prisma.format.findMany({
+      where: { id: { in: createOrderDto.formats_id } },
+    });
+
     createOrderDto.shipping = false;
     createOrderDto.shipped = false;
     createOrderDto.validation_token = hashPassword(validationToken);
+    delete createOrderDto.formats_id;
 
     return this.prisma.order
       .create({
-        data: createOrderDto,
+        data: {...createOrderDto, formats: formats},
       })
-      .then((res: Order) => {
-
-        this.sendgrid
-          .send(createOrderDto.customer_email, res.id, validationToken)
-          .catch(() => {
-            throw new HttpException('email issue', 401);
-          });
+      .then((order) => {
+        formats.forEach((format) => {
+          this.prisma.order.update.
+        });
       });
+
+    // .then((res: Order) => {
+    //   console.log(res);
+
+    //   this.sendgrid
+    //     .send(createOrderDto.customer_email, res.id, validationToken)
+    //     .catch(() => {
+    //       throw new HttpException('email issue', 401);
+    //     });
+    // });
   }
 
   findAll() {

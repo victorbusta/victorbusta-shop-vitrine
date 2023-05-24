@@ -11,7 +11,6 @@ const props = defineProps({
 
 const documentUrl = ref();
 const documentLoaded = ref(false);
-console.log(props.print);
 
 getDocObjUrl(props.print.id).then(res => {
   

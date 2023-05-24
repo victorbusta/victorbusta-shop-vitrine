@@ -17,12 +17,11 @@ export const useCheckoutStore = defineStore({
       // sessionStorage.setItem('checkout', JSON.stringify(this.prints));
     },
     removePrint(this: any, print: CheckoutPrint) {
-      const index = this.prints.indexOf(print);
-      console.log(print, index);
-
-      if (index > -1) {
-        this.prints = this.prints.splice(index, 1);
-      }
+      this.prints.forEach((checkedPrint: CheckoutPrint, key: number) => {
+        if (checkedPrint.format.id === print.format.id) {          
+          this.prints.splice(key, 1);
+        }
+      });
       // sessionStorage.setItem('prints', JSON.stringify(this.prints));
     },
     checkStored(this: any, print: CheckoutPrint) {

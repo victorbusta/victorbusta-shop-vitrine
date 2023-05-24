@@ -46,7 +46,6 @@ export class OrderService {
         data: createOrderDto,
       })
       .then((res: Order) => {
-        console.log(res);
 
         this.sendgrid
           .send(createOrderDto.customer_email, res.id, validationToken)

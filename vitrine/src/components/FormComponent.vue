@@ -32,11 +32,15 @@ function handleSubmit() {
 <template>
 
   <form @submit.prevent="handleSubmit">
-    <div v-for="field in fields" :key="field.id">
+    <div class="formInput" v-for="field in fields" :key="field.id">
       <input :type="field.type" :id="field.id" v-model="field.value" :placeholder="field.label"/>
       <hr>
     </div>
-    <button type="submit">Prise de commande</button>
+
+    <div class="order" @click="handleSubmit">
+      <h2>Prise de commande</h2>
+    </div>
+
   </form>
 
 </template>
@@ -49,9 +53,13 @@ form {
   align-items: center;
 }
 
+.formInput {
+  padding: 8px;
+  border: solid 1px ;
+}
+
 input {
-  margin: 8px;
-  font-size: var(--font-size-medium);
+  font-size: var(--font-size-medium-medium);
   border: none;
   background-color: var(--color-background);
   width: 100%;
@@ -66,12 +74,18 @@ hr {
   opacity: .5;
 }
 
-button {
-  border-radius: 8px;
-  margin-top: 32px;
+.order {
+  padding: 0 8px;
+  border: solid 1px var(--color-foreground);
+}
+
+.order:hover {
+  color: var(--color-background);
+  background-color: var(--color-foreground);
+}
+
+h2 {
   font-size: var(--font-size-medium);
-  background-color: var(--color-foreground-soft);
-  color: var(--color-background-mute);
 }
 
 form > div {

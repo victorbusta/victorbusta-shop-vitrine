@@ -108,5 +108,5 @@ export function translateEl(
 
 export const degToRad = (deg: number) => deg * (Math.PI / 180);
 
-export const delay = (ms: number) =>
+export const delay = (ms: number = 150) =>
   new Promise((resolve) => setTimeout(resolve, ms));

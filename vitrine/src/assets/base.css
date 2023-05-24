@@ -3,6 +3,7 @@
   --color-green-first-hover: #1d221cb1;
 
   --color-green-first: #1D221C;
+  --color-green-first-hover: hsla(108, 8%, 12%, 0.5);
   --color-green-second: #304A3C;
   --color-green-third: #8AA39B;
 
@@ -40,6 +41,7 @@
   --color-background-mute-hover: var(--color-light-third-hover);
 
   --color-foreground: var(--color-green-first);
+  --color-foreground-hover: var(--color-green-first-hover);
   --color-foreground-soft: var(--color-green-second);
   --color-foreground-mute: var(--color-green-third);
 

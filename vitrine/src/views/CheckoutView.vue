@@ -19,9 +19,9 @@ const checkoutFields: FormField[] = [
 <template>
   <div class="checkout">
     <h1>Panier</h1>
+    <hr style="width: 90%;">
     <div class="checkouts">
 
-      <hr width="100%">
 
       <div class="checkoutAble" v-for="print in checkoutPrints" :key="print">
         <CheckoutableCard :print="print" apiEndPoint="order" />
@@ -74,9 +74,13 @@ h1 {
 h2 {
   margin: 16px;
   padding: 8px;
-  background-color: var(--color-foreground);
-  color: var(--color-background);
+  color: var(--color-foreground);
   font-size: var(--font-size-medium-medium);
-  border-radius: 8px;
+  border: solid 1px var(--color-foreground);
+}
+
+h2:hover {
+  color: var(--color-background);
+  background-color: var(--color-foreground);
 }
 </style>

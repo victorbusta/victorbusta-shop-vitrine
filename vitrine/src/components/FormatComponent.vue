@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import CartIcon from './icons/IconCart.vue';
-import { onMounted, ref } from 'vue';
+import CloseIcon from './icons/IconClose.vue';
+import { ref } from 'vue';
 import { useCheckoutStore } from '../store/checkoutStore'
 import { defineProps } from 'vue'
 import type { Print, Format, CheckoutPrint } from '@/interfaces/print';
@@ -20,7 +21,7 @@ const props = defineProps({
   },
 });
 
-const stored = ref(false);
+const checkoutStore = useCheckoutStore();
 
 const checkoutAble = ref(props.checkoutAble ?? {
   id: props.print?.id,
@@ -28,15 +29,7 @@ const checkoutAble = ref(props.checkoutAble ?? {
   format: props.format
 } as CheckoutPrint)
 
-const checkoutStore = useCheckoutStore();
-
-onMounted(() => {
-  checkoutStore.$subscribe((mutation: any) => {
-    if (mutation.type === 'addArticle') {
-      // articleCount.value = checkoutStore.articleCount;
-    }
-  })
-})
+const stored = ref(false);
 
 const addToCart = () => {
   if (!stored.value) {
@@ -48,177 +41,94 @@ const addToCart = () => {
 
 const removeFromCart = () => {
   checkoutStore.removePrint(checkoutAble.value);
+
   stored.value = false;
 }
 
-const checkStored = () => {
-  stored.value = checkoutStore.checkStored(checkoutAble.value);  
+if (checkoutStore.checkStored(checkoutAble.value)) {
+  stored.value = true;
 }
-
-checkStored();
 </script>
 
 <template>
-  <span class="wrapper">
-    <h2>taille : {{ checkoutAble.format.size }}</h2>
-    <span class="smallwrap">
-      <h3>{{ checkoutAble.format.price }}</h3>
-      <div class="addCart">
-      <div class="cartWrap" @click="addToCart" v-if="!stored">
-        <CartIcon />
-        <span class="plus" >
-          <span></span>
-          <span></span>
-        </span>
-      </div>
-      <div class="added" @click="removeFromCart" v-else>
-        <span></span>
-        <span></span>
-      </div>
+  <div class="formatwrapper">
+    <h1>Taille : {{ checkoutAble.format.size }}</h1>
+    <div class="pricewrapper">
+      <h2>{{ checkoutAble.format.price }}</h2>
+      <span class="icon" @click="!stored ? addToCart() : removeFromCart()" >
+        <div class="iconwrapper" :style="'transform: translateX(' + (stored ? '74px);' : '0px);')">
+          <CartIcon/>
+        </div>
+        <div class="iconwrapper" :style="'transform: translateX(' + (stored ? '74px);' : '0px);')">
+          <CloseIcon :dark="true"/>
+        </div>
+      </span>
     </div>
-    </span>
-  </span>
+  </div>
 </template>
 
 <style scoped>
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-}
-
-.wrapper > h2 {
-  font-size: var(--font-size-medium);
+.formatwrapper {
   width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
-h3 {
-  margin-left: 16px;
-  font-size: 1rem;
+h1 {
+  font-size: var(--font-size-medium);
+  width: fit-content;
+}
+
+h2 {
+  font-size: var(--font-size-medium-small);
   opacity: .7;
-  font-size: var(--font-size-medium-medium);
 }
 
-div {
-  margin: 2px;
-  width: 64px;
-  height: 32px;
+.pricewrapper {
+  height: 100%;
   display: flex;
-  background-color: var(--color-background);
-  border-radius: 8px;
+  align-items: center;
+}
+
+.icon {
+  margin-left: 4px;
+  border: solid 1px var(--color-foreground);
+  width: 74px;
+  height: 34px;
+  display: flex;
+  justify-content: flex-end;
   overflow: hidden;
+
 }
 
-.smallwrap {
-  display: flex;
-  justify-content: end;
-}
-
-.smallwrap > h3 {
-  margin-right: 16px;
-}
-
-.addCart {
-  height: 36px;
-  width: 64px;
+.iconwrapper {
+  min-width: 74px;
+  height: 32px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: solid 1px var(--color-foreground);
-}
-
-.cartWrap {
-  width: 60px;
-  height: 32px;
+  transition: all ease-in-out .2s;
 }
 
 #fullcart {
+  width: 100%;
+  height: 32px;
+}
+
+.iconwrapper:hover > #fullcart {
+  rotate: -20deg;
+}
+
+#cross {
   width: 32px;
   height: 32px;
-  min-width: 32px;
-  min-height: 32px;
-}
-
-.addCart:hover > .cartWrap > #fullcart {
-  transform: rotate(10deg);
-}
-
-.plus {
-  width: 16px;
-  height: 16px;
-  margin: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.plus > span {
-  position: absolute;
-  background-color: var(--color-foreground);
-  height: 2px;
-  width: 10px;
-  border-radius: 2px;
-  transition: all .2s ease-in-out;
-}
-
-.plus > span:nth-child(even) {
-  transform: rotate(-90deg);
-}
-
-.plus > span:nth-child(odd) {
-  transform: rotate(0deg);
-}
-
-.addCart:hover > .cartWrap > .plus > span:nth-child(even) {
-  transform: rotate(30deg);
-  bottom: 4px;
-  left: 0;
-  width: 8px;
-}
-
-.addCart:hover > .cartWrap > .plus > span:nth-child(odd) {
-  transform: rotate(-45deg);
-  width: 12px;
-  bottom: 6px;
-  left: 4px;
-}
-
-.added {
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.added > span {
-  position: absolute;
-  height: 4px;
-  background-color: var(--color-foreground);
-  border-radius: 4px;
-  transition: all .2s ease-in-out;
-}
-
-.added > span:nth-child(even) {
-  width: 24px;
-  rotate: -40deg;
-  transform: translate(4px, 4px);
-}
-
-.added > span:nth-child(odd) {
-  width: 16px;
-  rotate: 40deg;
-  transform: translate(-4px, 7px);
-}
-
-.addCart:hover > .added > span:nth-child(even) {
-  width: 24px;
-  rotate: -45deg;
-  transform: translate(0);
-}
-
-.addCart:hover > .added > span:nth-child(odd) {
-  width: 24px;
   rotate: 45deg;
-  transform: translate(0);
+  scale: .75;
+  transition: all .2s ease-in-out;
 }
+
+.iconwrapper:hover > #cross {
+  rotate: 135deg;
+}
+
 </style>

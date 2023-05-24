@@ -92,7 +92,6 @@ nav > a {
   border: solid 1px var(--color-foreground);
   width: 108px;
   height: 48px;
-  border-radius: 8px;
   display: flex;
   align-items: center;
   margin: 8px;
@@ -106,6 +105,7 @@ h3 {
   margin: 4px;
   transition: all .2s ease-in-out;
   color: var(--color-foreground);
+  font-size: var(--font-size-medium-small);
 }
 
 .itemNb {

@@ -15,12 +15,24 @@ const checkoutFields: FormField[] = [
 </script>
 
 <template>
-  <h1>Information client</h1>
-  <hr>
-  <FormComponent :fields="checkoutFields" apiEndPoint="order" />
+  <div class="checkout">
+    <h1>Information client</h1>
+    <hr style="width: 90%;">
+    <FormComponent :fields="checkoutFields" apiEndPoint="order" />
+  </div>
 </template>
 
 <style scoped>
+.checkout {
+  width: 90%;
+  height: calc(100vh - 110px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 16px 16px 0 0;
+  overflow: scroll;
+}
+
 hr {
   width: 80%;
   opacity: .5;
@@ -29,6 +41,7 @@ hr {
 
 h1 {
   width: calc(100% - 32px);
+  border-radius: 0 0 16px 16px;
   color: var(--color-text);
   text-align: center;
   font-size: var(--font-size-big-small);

@@ -5,6 +5,7 @@ import type { FormField } from '@/interfaces/form';
 import { useCheckoutStore } from '@/store/checkoutStore';
 import ArrowIcon from './icons/IconArrow.vue';
 import { HTTP } from '@/http';
+import LoadingIcon from '@/components/icons/IconLoading.vue';
 
 const checkoutStore = useCheckoutStore();
 
@@ -20,8 +21,13 @@ const props = defineProps({
 });
 
 const fields = ref<FormField[]>(props.fields);
+const order = ref();
+const orderSend = ref(false);
+const orderSending = ref(false);
 
 function handleSubmit() {
+  orderSending.value = true;
+
   let formData: any = {};
   fields.value.forEach((field) => {
     formData[field.id] = field.value;
@@ -33,29 +39,45 @@ function handleSubmit() {
     formData.formats_id.push(print.format.id);
   });
 
-  console.log(JSON.stringify(formData));
+  HTTP.post(props.apiEndPoint, formData).then(res => {
+    order.value = res.data;
+    orderSend.value = true;
+  });
 }
 </script>
 
 <template>
 
-  <form @submit.prevent="handleSubmit">
-    <div class="formInput" v-for="field in fields" :key="field.id">
-      <input :type="field.type" :id="field.id" v-model="field.value" :placeholder="field.label"/>
-      <hr>
-    </div> 
-  </form>
+  <div v-if="!orderSending && !orderSend" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+  
+    <form @submit.prevent="handleSubmit">
+      <div class="formInput" v-for="field in fields" :key="field.id">
+        <input :type="field.type" :id="field.id" v-model="field.value" :placeholder="field.label"/>
+        <hr>
+      </div> 
+    </form>
 
-  <hr style="width: 90%; margin: 16px 0;">
+    <hr style="width: 90%; margin: 16px 0;">
 
-  <div class="bottomNav">
-    <RouterLink to="/checkout" class="back">
-      <ArrowIcon style="width: 32px; height: 32px;" />
-    </RouterLink>
-    <div class="order" @click="handleSubmit">
-      <h2>Prise de commande</h2>
-    </div>
-  </div>   
+    <div class="bottomNav">
+      <RouterLink to="/checkout" class="back">
+        <ArrowIcon style="width: 32px; height: 32px;" />
+      </RouterLink>
+      <div class="order" @click="handleSubmit">
+        <h2>Prise de commande</h2>
+      </div>
+    </div>   
+    
+  </div>
+
+  <div v-else-if="orderSending && !orderSend">
+    <LoadingIcon style="width: 64px; height: 64px;"/>
+  </div>
+
+  <div v-else-if="orderSending && orderSend">
+    <h2>La commade n#{{ order.id }} est bien envoyé !</h2>
+    <h3>Merci de bien vérifier votre boîte mail et de cliquer sur le lien pour valider la prise de commande</h3>
+  </div>
 
 </template>
 

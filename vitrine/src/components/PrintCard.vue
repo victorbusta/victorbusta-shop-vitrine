@@ -53,7 +53,7 @@ const props = defineProps({
   .card {
     width: 100vw;
     height: 50vh;
-    padding: 0 8px;
+    padding: 0 4vw;
     background-color: var(--color-background);
     display: flex;
     top: 16px;

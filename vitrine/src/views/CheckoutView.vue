@@ -24,8 +24,8 @@ const checkoutFields: FormField[] = [
     <div class="checkouts">
 
 
-      <div class="checkoutAble" v-for="print in checkoutPrints" :key="print">
-        <CheckoutableCard :print="print" apiEndPoint="order" />
+      <div class="checkoutAble" v-for="print in checkoutPrints" :key="print.id">
+        <CheckoutableCard :print="print" apiEndPoint="/order" />
         <hr>
       </div>
 
@@ -50,7 +50,6 @@ const checkoutFields: FormField[] = [
   flex-direction: column;
   align-items: center;
   border-radius: 16px 16px 0 0;
-  overflow: scroll;
 }
 
 .checkouts {

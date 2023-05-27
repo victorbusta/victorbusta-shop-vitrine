@@ -16,11 +16,10 @@ model Admin {
 }
 
 model Print {
-  id            Int       @id @default(autoincrement())
-  title         String
-  creation_date DateTime
-  added_date    DateTime  @default(now())
-  document      Document?
+  id         Int       @id @default(autoincrement())
+  title      String
+  added_date DateTime  @default(now())
+  document   Document?
 
   formats Format[]
 }
@@ -42,9 +41,9 @@ model Format {
   price Int
 
   print_id Int
-  print    Print   @relation(fields: [print_id], references: [id])
+  print    Print @relation(fields: [print_id], references: [id])
 
-  orders   Order[]
+  order_format Order_Format[]
 }
 
 model Order {
@@ -60,5 +59,15 @@ model Order {
   shipped             Boolean
   validation_token    String?
 
-  formats Format[]
+  order_format Order_Format[]
+}
+
+model Order_Format {
+  order_id Int
+  order    Order @relation(fields: [order_id], references: [id])
+
+  format_id Int
+  format    Format @relation(fields: [format_id], references: [id])
+
+  @@unique(fields: [order_id, format_id], name: "relation_id")
 }

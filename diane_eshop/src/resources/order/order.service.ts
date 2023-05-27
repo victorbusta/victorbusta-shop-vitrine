@@ -41,30 +41,32 @@ export class OrderService {
       where: { id: { in: createOrderDto.formats_id } },
     });
 
+    delete createOrderDto.formats_id;
+
     createOrderDto.shipping = false;
     createOrderDto.shipped = false;
     createOrderDto.validation_token = hashPassword(validationToken);
-    delete createOrderDto.formats_id;
 
-    return this.prisma.order
-      .create({
-        data: {...createOrderDto, formats: formats},
-      })
-      .then((order) => {
-        formats.forEach((format) => {
-          this.prisma.order.update.
-        });
-      });
+    const order = await this.prisma.order.create({ data: createOrderDto });
 
-    // .then((res: Order) => {
-    //   console.log(res);
+    const relations: { order_id: number; format_id: number }[] = [];
+    let price = 0;
 
-    //   this.sendgrid
-    //     .send(createOrderDto.customer_email, res.id, validationToken)
-    //     .catch(() => {
-    //       throw new HttpException('email issue', 401);
-    //     });
-    // });
+    formats.forEach((format) => {
+      relations.push({ order_id: order.id, format_id: format.id });
+      price += format.price;
+    });
+
+    await this.prisma.order_Format.createMany({ data: relations });
+
+    await this.sendgrid.send(
+      createOrderDto.customer_email,
+      order.id,
+      price,
+      validationToken,
+    );
+
+    return order;
   }
 
   findAll() {
@@ -79,7 +81,7 @@ export class OrderService {
         shipping_city: true,
         shipping: true,
         shipped: true,
-        formats: true,
+        order_format: true,
       },
     });
   }
@@ -97,7 +99,7 @@ export class OrderService {
         shipping_city: true,
         shipping: true,
         shipped: true,
-        formats: true,
+        order_format: true,
       },
     });
   }
@@ -115,7 +117,7 @@ export class OrderService {
         shipping_city: true,
         shipping: true,
         shipped: true,
-        formats: true,
+        order_format: true,
       },
     });
   }
@@ -133,7 +135,7 @@ export class OrderService {
         shipping_city: true,
         shipping: true,
         shipped: true,
-        formats: true,
+        order_format: true,
       },
     });
   }

@@ -10,7 +10,7 @@ export class CreateOrderDto {
   customer_lastname: string;
 
   @ApiProperty()
-  @IsEmail()
+  // @IsEmail()
   customer_email: string;
 
   @ApiProperty()

@@ -30,7 +30,6 @@ const checkoutFields: FormField[] = [
   flex-direction: column;
   align-items: center;
   border-radius: 16px 16px 0 0;
-  overflow: scroll;
 }
 
 hr {

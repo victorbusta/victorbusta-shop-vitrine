@@ -8,7 +8,6 @@ CREATE TABLE "Admin" (
 CREATE TABLE "Print" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
-    "creation_date" TIMESTAMP(3) NOT NULL,
     "added_date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Print_pkey" PRIMARY KEY ("id")
@@ -52,9 +51,9 @@ CREATE TABLE "Order" (
 );
 
 -- CreateTable
-CREATE TABLE "_FormatToOrder" (
-    "A" INTEGER NOT NULL,
-    "B" INTEGER NOT NULL
+CREATE TABLE "Order_Format" (
+    "order_id" INTEGER NOT NULL,
+    "format_id" INTEGER NOT NULL
 );
 
 -- CreateIndex
@@ -64,10 +63,7 @@ CREATE UNIQUE INDEX "Admin_email_key" ON "Admin"("email");
 CREATE UNIQUE INDEX "Document_print_id_key" ON "Document"("print_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_FormatToOrder_AB_unique" ON "_FormatToOrder"("A", "B");
-
--- CreateIndex
-CREATE INDEX "_FormatToOrder_B_index" ON "_FormatToOrder"("B");
+CREATE UNIQUE INDEX "Order_Format_order_id_format_id_key" ON "Order_Format"("order_id", "format_id");
 
 -- AddForeignKey
 ALTER TABLE "Document" ADD CONSTRAINT "Document_print_id_fkey" FOREIGN KEY ("print_id") REFERENCES "Print"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -76,7 +72,7 @@ ALTER TABLE "Document" ADD CONSTRAINT "Document_print_id_fkey" FOREIGN KEY ("pri
 ALTER TABLE "Format" ADD CONSTRAINT "Format_print_id_fkey" FOREIGN KEY ("print_id") REFERENCES "Print"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_FormatToOrder" ADD CONSTRAINT "_FormatToOrder_A_fkey" FOREIGN KEY ("A") REFERENCES "Format"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Order_Format" ADD CONSTRAINT "Order_Format_order_id_fkey" FOREIGN KEY ("order_id") REFERENCES "Order"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_FormatToOrder" ADD CONSTRAINT "_FormatToOrder_B_fkey" FOREIGN KEY ("B") REFERENCES "Order"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Order_Format" ADD CONSTRAINT "Order_Format_format_id_fkey" FOREIGN KEY ("format_id") REFERENCES "Format"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

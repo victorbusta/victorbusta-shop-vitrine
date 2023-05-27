@@ -50,7 +50,6 @@ export class PrintService {
       select: {
         id: true,
         title: true,
-        creation_date: true,
         formats: true,
       },
     });

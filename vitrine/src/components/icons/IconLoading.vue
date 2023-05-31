@@ -7,10 +7,6 @@
     <span></span>
     <span></span>
     <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
   </div>
 </template>
 
@@ -19,62 +15,45 @@ div {
   height: 100%;
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;  
 }
 
 span {
-  position: absolute;
-  height: 25%;
-  width: 10%;
-  border-radius: 8px;
-  background-color: var(--color-foreground-mute);
+  height: 15%;
+  width: 15%;
+  border-radius: 50%;
+  background-color: var(--color-foreground);
   transform: translateY(100%);
 }
 
 span:nth-child(1) {
-  animation: 3s ease-out rotate infinite;
+  animation: 1s ease-out rotate infinite;
 }
 
 span:nth-child(2) {
-  animation: 3s ease-out .2s rotate infinite;
+  animation: 1s ease-out .2s rotate infinite;
 
 }
 
 span:nth-child(3) {
-  animation: 3s ease-out .4s rotate infinite;
+  animation: 1s ease-out .4s rotate infinite;
 
 }
 
 span:nth-child(4) {
-  animation: 3s ease-out .6s rotate infinite;
-}
-
-span:nth-child(5) {
-  animation: 3s ease-out .8s rotate infinite;
-}
-
-span:nth-child(6) {
-  animation: 3s ease-out 1s rotate infinite;
-}
-
-span:nth-child(7) {
-  animation: 3s ease-out 1.2s rotate infinite;
-}
-
-span:nth-child(8) {
-  animation: 3s ease-out 1.4s rotate infinite;
+  animation: 1s ease-out .6s rotate infinite;
 }
 
 @keyframes rotate {
     0%{
-      rotate: 0;
+      opacity: .5;
     }
-    33%{
-      rotate: 360deg;
+    50%{
+      opacity: 1;
     }
     100%{
-      rotate: 360deg;
+      opacity: .5;
     }
   }
 </style>

@@ -8,7 +8,7 @@ import { RouterLink } from 'vue-router'
 
 const checkoutStore = useCheckoutStore();
 
-const checkoutPrints = ref(checkoutStore.prints); 
+const checkoutPrints = ref(checkoutStore.getStored()); 
 
 const checkoutFields: FormField[] = [
   { id: 'name', label: 'Name', type: 'text', value: '' },

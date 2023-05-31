@@ -20,9 +20,11 @@ checkoutStore.initData();
       </RouterLink>
       <nav>
         <RouterLink to="/checkout">
-          <h3 class="itemNb">{{articleCount}}</h3>
           <CartIcon/>
           <h3>Panier</h3>
+          <div class="itemNb">
+            <h4>{{articleCount}}</h4>
+          </div>
         </RouterLink>
       </nav>
     </div>
@@ -50,7 +52,7 @@ header {
 .header {
   position: sticky;
   top: 0;
-  width: 100%;
+  width: 95%;
   padding: 4px;
   display: flex;
   justify-content: space-between;
@@ -68,7 +70,6 @@ hr {
 }
 
 h1 {
-  margin-left: 32px;
   font-family: 'CopperPlate Goth';
   color: var(--color-foreground);
 }
@@ -77,14 +78,6 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.bg {
-  position: fixed;
-  top: 110px;
-  background: linear-gradient(180deg,var(--color-foreground) 0%, var(--color-foreground-soft) 50%, var(--color-background) 100%);
-  width: 100%;
-  height: 40vh;
 }
 
 nav > a {
@@ -98,7 +91,6 @@ nav > a {
   color: #FFFFFF;
 }
 
-
 h3 {
   border-radius: 6px;
   padding: 4px;
@@ -110,9 +102,15 @@ h3 {
 
 .itemNb {
   position: absolute;
-  margin-left: 16px;
-  opacity: 0;
-  transition: all .2s ease-in-out;
+  padding: 4px;
+  transform: translate(92px, 24px);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--color-foreground);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 nav > .router-link-active {
@@ -122,18 +120,6 @@ nav > .router-link-active {
 
 nav > .router-link-active > h3 {
   color: var(--color-background);
-}
-
-nav:hover > a > svg {
-  transform: translateX(150%);
-}
-
-nav:hover > a > .itemNb {
-  opacity: 1;
-}
-
-nav:hover > a > h3 {
-  opacity: 0;
 }
 
 @media only screen and (max-width: 767px) {

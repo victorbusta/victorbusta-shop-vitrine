@@ -13,17 +13,15 @@ const modalOpened = ref(false);
 const printsUrl = ref<string[]>([]);
 const printsLoaded = ref(false);
 
-
 const fetchPrints = async () => {
   try {
     const res = await HTTP.get('/print');
-    const printRes = res.data;
-    
-    for (const print of printRes) {
-      const nestedRes: { data: Print } = await HTTP.get(`/print/${print.id}`);
-      prints.value.push(nestedRes.data);
-      printsUrl.value[print.id] = await getDocObjUrl(print.id);
-    }
+    const printRes: Print[] = res.data;
+
+    printRes.forEach((print) => {
+      HTTP.get(`/print/${print.id}`).then(printData => prints.value[print.id] = printData.data);
+      getDocObjUrl(print.id).then(docUrl => printsUrl.value[print.id] = docUrl);
+    })
 
     printsLoaded.value = true;
   } catch (error) {
@@ -40,18 +38,19 @@ const showModal = (print: Print) => {
   modalPrint.value = print;
   modalOpened.value = true;
   anim.translateY(".modal", "0vh");
-} 
+}
 
 const closeModal = async () => {
   anim.translateY(".modal", "100vh");
   await anim.delay();
   modalPrint.value = undefined;
   modalOpened.value = false;
-} 
+}
+
 </script>
 
 <template>
-  <div class="wrapper" v-if="printsLoaded">
+  <div class="wrapper">
 
     <div class="image-gallery">
       <div v-for="print in evenPrints()" :key="print.id" class="image-container" @click="showModal(print)" >
@@ -66,12 +65,12 @@ const closeModal = async () => {
     </div>
 
   </div>
-  
-  <LoadingIcon style="width: 128px; height: 128px;" v-else/>
+
+  <LoadingIcon style="width: 128px; height: 128px;" v-if="!printsLoaded"/>
 
   <div class="modal" >
-    <CloseIcon height="64px" width="64px" @click="closeModal" :dark="false"/>
-    <PrintCard v-if="modalOpened" :print="modalPrint" :printUrl="printsUrl[modalPrint?.id ?? 1]"/>
+    <CloseIcon height="64px" width="64px" style="z-index: 1;" @click="closeModal" :dark="false"/>
+    <PrintCard v-if="modalOpened" :print="modalPrint as Print" :printUrl="printsUrl[modalPrint?.id ?? 1]"/>
   </div>
 
 </template>

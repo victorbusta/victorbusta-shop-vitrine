@@ -43,6 +43,8 @@ function handleSubmit() {
     order.value = res.data;
     orderSend.value = true;
   });
+
+  checkoutStore.resetPrints();
 }
 </script>
 

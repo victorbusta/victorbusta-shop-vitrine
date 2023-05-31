@@ -21,7 +21,7 @@ const props = defineProps({
 
       <hr>
 
-      <FormatComponent v-for="format in print.formats" :key="format" :print="print" :format="format" :checkoutAble="null"/>
+      <FormatComponent v-for="format in print.formats" :key="format.id" :print="print" :format="format" :checkoutAble="null"/>
 
     </div>
   </div>
@@ -47,7 +47,7 @@ const props = defineProps({
     padding: 4px;
     object-fit: scale-down;
     max-width: 100vw;
-    max-height: calc(50vh - 72px);
+    max-height: 60vh;
   }
 
   .card {

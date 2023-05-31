@@ -1,9 +1,20 @@
-import { Controller, Post, UseGuards, Request, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  UseGuards,
+  Request,
+  Body,
+  HttpException,
+  Response,
+} from '@nestjs/common';
 import { Public } from './public.decorator';
 import { LocalAuthGuard } from './auth/guards/local-auth.guard';
 import { LoginDto } from './login.dto';
 import { AuthService } from './auth/auth.service';
 import { ApiTags } from '@nestjs/swagger';
+import * as fs from 'fs';
+import { join } from 'path';
 
 @ApiTags('auth')
 @Controller()
@@ -15,5 +26,14 @@ export class AppController {
   @Post('auth/login')
   async login(@Request() req: any, @Body() login: LoginDto) {
     return this.authService.login(req.user);
+  }
+
+  @Public()
+  @Get('image')
+  async getImage(@Response() res: any) {
+    const imgPath = join(__dirname, '..', 'public', '01silhouette.jpg');
+    res.writeHead(200, { 'Content-type': 'image/jpg' });
+
+    res.sendFile(imgPath);
   }
 }

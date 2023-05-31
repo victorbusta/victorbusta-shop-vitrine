@@ -78,7 +78,7 @@ function handleSubmit() {
   </div>
 
   <div v-else-if="orderSending && orderSend">
-    <h2>La commade n#{{ order.id }} est bien envoyé !</h2>
+    <h2>La commande n#{{ order.id }} est bien envoyée !</h2>
     <h3>Merci de bien vérifier votre boîte mail et de cliquer sur le lien pour valider la prise de commande</h3>
   </div>
 

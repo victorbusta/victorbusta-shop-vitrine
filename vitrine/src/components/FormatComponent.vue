@@ -45,19 +45,26 @@ const removeFromCart = () => {
 
 <template>
   <div class="formatwrapper">
-    <h1>Taille : {{ checkoutAble.format.size }}</h1>
+    <div class="desc">
+      <h2>Taille: {{ checkoutAble.format.size }}</h2>
+      <h3>Prix: {{ checkoutAble.format.price }} €</h3>
+    </div>
+
     <div class="pricewrapper">
-      <h2>{{ checkoutAble.format.price }} €</h2>
+
       <span class="storeAction minus" @click="removeFromCart">
         <div></div>
       </span>
-      <span class="storedNb">
-        <h1>{{ storedNb }}</h1>
-      </span>
+
       <span class="storeAction plus" @click="addToCart">
         <div></div>
         <div></div>
       </span>
+
+      <span class="storedNb">
+        <h2>{{ storedNb }}</h2>
+      </span>
+
     </div>
   </div>
 </template>
@@ -70,7 +77,7 @@ const removeFromCart = () => {
   margin-bottom: 8px;
 }
 
-h1 {
+h2 {
   font-size: var(--font-size-medium-small);
   width: fit-content;
   display: flex;
@@ -78,12 +85,18 @@ h1 {
   justify-content: center;
 }
 
-h2 {
+h3 {
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: var(--font-size-medium-small);
   opacity: .7;
+}
+
+.desc {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
 }
 
 .pricewrapper {
@@ -96,6 +109,7 @@ h2 {
   border: solid 1px var(--color-foreground);
   width: 32px;
   height: 32px;
+  margin-left: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -104,8 +118,8 @@ h2 {
 .storeAction {
   margin: 0 4px;
   border: solid 1px var(--color-foreground);
-  height: 24px;
-  width: 24px;
+  height: 32px;
+  width: 32px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -118,10 +132,6 @@ h2 {
   height: 10%;
   background-color: var(--color-foreground);
   border-radius: 8px;
-}
-
-.plus {
-  margin-right: 0;
 }
 
 .plus > div:first-child {

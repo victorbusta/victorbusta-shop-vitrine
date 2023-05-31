@@ -70,9 +70,7 @@ export const useCheckoutStore = defineStore({
         // Parse the stored data and set it as the state value
 
         JSON.parse(storedData).forEach((print: CheckoutPrint) => {
-          this.prints.push(print);
-          console.log(print);
-          
+          this.prints.push(print);          
         });
       }
     },

@@ -17,7 +17,7 @@ const props = defineProps({
     </div>
 
     <div class="card">
-      <h1>{{ print.title }}</h1>
+      <h2>{{ print.title }}</h2>
 
       <hr>
 
@@ -52,7 +52,9 @@ const props = defineProps({
 
   .card {
     width: 100vw;
-    height: 50vh;
+    height: fit-content;
+    min-height: calc(40vh - 64px);
+    max-height: fit-content;
     padding: 0 4vw;
     background-color: var(--color-background);
     display: flex;

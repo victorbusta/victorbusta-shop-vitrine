@@ -61,7 +61,7 @@ const checkoutFields: FormField[] = [
 
 .checkoutAble {
   grid-column: 1;
-  width: 90%;
+  width: 100%;
 }
 
 hr {

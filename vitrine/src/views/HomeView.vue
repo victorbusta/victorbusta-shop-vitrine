@@ -112,11 +112,11 @@ img {
   height: 100vh;
   background-color: var(--color-foreground-hover);
   transition: all ease-in-out .2s;
+  overflow-y: scroll;
   z-index: 1;
 }
 
 .cross {
-
   background-color: aliceblue;
 }
 

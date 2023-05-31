@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 export const HTTP = axios.create({
-  baseURL: `http://localhost:3000/`
+  // baseURL: `http://localhost:3000/`
+  baseURL: `http://192.168.1.51:3000/`
 });
 
 export const getPrints = () => {

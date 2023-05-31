@@ -113,8 +113,9 @@ hr {
 }
 
 .order {
-  padding: 0 8px;
-  border: solid 1px var(--color-foreground);
+  height: fit-content;
+  width: fit-content;
+  color: var(--color-foreground);
 }
 
 .order:hover {
@@ -123,9 +124,7 @@ hr {
 }
 
 h2 {
-  margin: 16px;
   padding: 8px;
-  color: var(--color-foreground);
   font-size: var(--font-size-medium-medium);
   border: solid 1px var(--color-foreground);
   width: fit-content;

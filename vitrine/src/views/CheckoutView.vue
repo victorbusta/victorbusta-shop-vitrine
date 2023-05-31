@@ -34,7 +34,7 @@ const checkoutFields: FormField[] = [
           <ArrowIcon style="width: 32px; height: 32px;" />
         </RouterLink>
         <RouterLink to="/customer" v-if="checkoutPrints.length !== 0">
-          <h2>commander</h2>
+          <input class="order" type="submit" value="Commander">
         </RouterLink>
       </div>
 
@@ -65,7 +65,8 @@ const checkoutFields: FormField[] = [
 }
 
 hr {
-  width: 100%;
+  width: 90%;
+  margin: 0 5%;
   opacity: .5;
 }
 
@@ -77,26 +78,28 @@ h1 {
   font-size: var(--font-size-big-small);
 }
 
-h2 {
-  margin: 16px;
-  padding: 8px;
+.order {
+  height: fit-content;
+  width: fit-content;
   color: var(--color-foreground);
+  padding: 8px;
   font-size: var(--font-size-medium-medium);
   border: solid 1px var(--color-foreground);
   width: fit-content;
+  font-family: 'CopperPlate Goth';
 }
 
-h2:hover {
+.order:hover {
   color: var(--color-background);
   background-color: var(--color-foreground);
 }
-
 
 .bottomNav {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 8px 4px;
 }
 
 .back {

@@ -28,6 +28,8 @@ const orderSending = ref(false);
 function handleSubmit() {
   orderSending.value = true;
 
+
+
   let formData: any = {};
   fields.value.forEach((field) => {
     formData[field.id] = field.value;
@@ -54,22 +56,21 @@ function handleSubmit() {
   
     <form @submit.prevent="handleSubmit">
       <div class="formInput" v-for="field in fields" :key="field.id">
-        <input :type="field.type" :id="field.id" v-model="field.value" :placeholder="field.label"/>
+        <input :type="field.type" :id="field.id" v-model="field.value" :placeholder="field.label" required/>
         <hr>
       </div> 
-    </form>
 
-    <hr style="width: 90%; margin: 16px 0;">
+      <hr style="width: 100%;">
 
     <div class="bottomNav">
       <RouterLink to="/checkout" class="back">
         <ArrowIcon style="width: 32px; height: 32px;" />
       </RouterLink>
-      <div class="order" @click="handleSubmit">
-        <h2>commander</h2>
-      </div>
-    </div>   
-    
+      <input class="order" type="submit" value="Commander">
+    </div>
+
+    </form>
+
   </div>
 
   <div v-else-if="orderSending && !orderSend">
@@ -116,18 +117,16 @@ hr {
   height: fit-content;
   width: fit-content;
   color: var(--color-foreground);
+  padding: 8px;
+  font-size: var(--font-size-medium-medium);
+  border: solid 1px var(--color-foreground);
+  width: fit-content;
+  font-family: 'CopperPlate Goth';
 }
 
 .order:hover {
   color: var(--color-background);
   background-color: var(--color-foreground);
-}
-
-h2 {
-  padding: 8px;
-  font-size: var(--font-size-medium-medium);
-  border: solid 1px var(--color-foreground);
-  width: fit-content;
 }
 
 form > div {

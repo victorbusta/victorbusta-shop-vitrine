@@ -34,7 +34,7 @@ const checkoutFields: FormField[] = [
           <ArrowIcon style="width: 32px; height: 32px;" />
         </RouterLink>
         <RouterLink to="/customer" v-if="checkoutPrints.length !== 0">
-          <h2>Passer commande</h2>
+          <h2>commander</h2>
         </RouterLink>
       </div>
 

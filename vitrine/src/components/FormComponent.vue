@@ -66,7 +66,7 @@ function handleSubmit() {
         <ArrowIcon style="width: 32px; height: 32px;" />
       </RouterLink>
       <div class="order" @click="handleSubmit">
-        <h2>Prise de commande</h2>
+        <h2>commander</h2>
       </div>
     </div>   
     
@@ -123,7 +123,12 @@ hr {
 }
 
 h2 {
-  font-size: var(--font-size-medium);
+  margin: 16px;
+  padding: 8px;
+  color: var(--color-foreground);
+  font-size: var(--font-size-medium-medium);
+  border: solid 1px var(--color-foreground);
+  width: fit-content;
 }
 
 form > div {

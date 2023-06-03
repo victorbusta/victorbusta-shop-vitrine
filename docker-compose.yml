@@ -3,12 +3,12 @@ services:
 
   eshop_db:
     container_name: eshop_db
-    image: postgres:13.5
+    image: mysql:8
     restart: always
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: pass
-      POSTGRES_DB: db_eshop
-      PGDATA: /data/postgres_service
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
     ports:
-      - '5433:5432'
+      - '3306:3306'

@@ -8,23 +8,9 @@ export class PrintService {
   constructor(private prisma: PrismaService) {}
 
   create(createPrintDto: CreatePrintDto) {
-    return this.prisma.print.create({ data: createPrintDto });
-  }
-
-  createDocument(printId: number, file: Express.Multer.File) {
-    return this.prisma.document
-      .create({
-        data: {
-          print_id: printId,
-          name: file.originalname,
-          mimetype: file.mimetype,
-          buffer: file.buffer,
-          size: file.size,
-        },
-      })
-      .catch((e) => {
-        throw new HttpException("Can't add document", 401);
-      });
+    return this.prisma.print.create({
+      data: createPrintDto,
+    });
   }
 
   async createFormat(printId: number, createFormatDto: CreateFormatDto) {
@@ -55,19 +41,6 @@ export class PrintService {
     });
   }
 
-  findPrintDocument(id: number) {
-    return this.prisma.print
-      .findUniqueOrThrow({
-        where: { id: id },
-        select: {
-          document: true,
-        },
-      })
-      .catch((e) => {
-        throw new HttpException('error displaying document', 401);
-      });
-  }
-
   findOrders(id: number) {
     return this.prisma.print.findUnique({
       where: { id: id },
@@ -84,7 +57,6 @@ export class PrintService {
   }
 
   remove(id: number) {
-    this.prisma.document.delete({ where: { print_id: id } });
     this.prisma.format.deleteMany({ where: { print_id: id } });
     return this.prisma.print.delete({ where: { id: id } });
   }

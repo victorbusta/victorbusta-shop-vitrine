@@ -30,16 +30,6 @@ export class PrintController {
   }
 
   @ApiBearerAuth('JWT-auth')
-  @Post(':id/document')
-  @UseInterceptors(FileInterceptor('file'))
-  createDocument(
-    @Param('id') id: number,
-    @UploadedFile() file: Express.Multer.File,
-  ) {
-    return this.printService.createDocument(+id, file);
-  }
-
-  @ApiBearerAuth('JWT-auth')
   @Post(':id/format')
   CreateFormat(
     @Param('id') id: number,
@@ -58,20 +48,6 @@ export class PrintController {
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.printService.findOne(+id);
-  }
-
-  @Public()
-  @Get(':id/document')
-  async findPrintDocument(
-    @Param('id') id: number,
-    @Res({ passthrough: true }) res: Response,
-  ): Promise<StreamableFile> {
-    const doc = await this.printService.findPrintDocument(+id);
-    res.set({
-      'Content-Type': doc.document?.mimetype,
-      'Content-Disposition': `attachment; filename="${doc.document?.name}"`,
-    });
-    return new StreamableFile(doc.document?.buffer as Buffer);
   }
 
   @ApiBearerAuth('JWT-auth')

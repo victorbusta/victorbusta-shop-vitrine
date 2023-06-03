@@ -4,7 +4,6 @@ import type { Print } from '@/interfaces/print';
 
 const props = defineProps({
   print: { type: Object as () => Print, required: true },
-  printUrl : { type: String, required: true },
 })
 </script>
 
@@ -13,7 +12,7 @@ const props = defineProps({
   <div class="wrapper">
 
     <div class="imgwrapper">
-      <img :src="printUrl">
+      <img :src="print.documentUrl">
     </div>
 
     <div class="card">

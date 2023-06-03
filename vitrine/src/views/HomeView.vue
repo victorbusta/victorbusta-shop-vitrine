@@ -53,13 +53,13 @@ const closeModal = async () => {
 
     <div class="image-gallery">
       <div v-for="print in evenPrints()" :key="print.id" class="image-container" @click="showModal(print)" >
-        <img :src="printsUrl[print.id]">
+        <img :src="print.documentUrl">
       </div>
     </div>
 
     <div class="image-gallery">
       <div v-for="print in oddPrints()" :key="print.id" class="image-container" @click="showModal(print)" >
-        <img :src="printsUrl[print.id]">
+        <img :src="print.documentUrl">
       </div>
     </div>
 

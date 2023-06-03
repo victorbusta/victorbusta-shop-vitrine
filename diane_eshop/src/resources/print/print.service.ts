@@ -26,6 +26,7 @@ export class PrintService {
       select: {
         id: true,
         title: true,
+        documentUrl: true,
       },
     });
   }

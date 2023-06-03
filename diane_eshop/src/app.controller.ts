@@ -27,13 +27,4 @@ export class AppController {
   async login(@Request() req: any, @Body() login: LoginDto) {
     return this.authService.login(req.user);
   }
-
-  @Public()
-  @Get('image')
-  async getImage(@Response() res: any) {
-    const imgPath = join(__dirname, '..', 'public', '01silhouette.jpg');
-    res.writeHead(200, { 'Content-type': 'image/jpg' });
-
-    res.sendFile(imgPath);
-  }
 }

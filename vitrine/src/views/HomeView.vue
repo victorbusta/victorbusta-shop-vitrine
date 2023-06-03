@@ -3,7 +3,7 @@ import LoadingIcon from '@/components/icons/IconLoading.vue';
 import CloseIcon from '@/components/icons/IconClose.vue';
 import PrintCard from '@/components/PrintCard.vue';
 import { ref } from 'vue';
-import { HTTP, getDocObjUrl } from '@/http';
+import { HTTP } from '@/http';
 import type { Print } from '@/interfaces/print';
 import * as anim from '@/utils.animation';
 
@@ -20,7 +20,6 @@ const fetchPrints = async () => {
 
     printRes.forEach((print) => {
       HTTP.get(`/print/${print.id}`).then(printData => prints.value[print.id] = printData.data);
-      getDocObjUrl(print.id).then(docUrl => printsUrl.value[print.id] = docUrl);
     })
 
     printsLoaded.value = true;

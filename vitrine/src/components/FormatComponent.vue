@@ -26,7 +26,8 @@ const checkoutStore = useCheckoutStore();
 const checkoutAble = ref(props.checkoutAble ?? {
   id: props.print?.id,
   title: props.print?.title,
-  format: props.format
+  format: props.format,
+  documentUrl: props.print?.documentUrl,
 } as CheckoutPrint)
 
 const stored = ref(false);
@@ -74,7 +75,7 @@ const removeFromCart = () => {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin: 8px 0;
 }
 
 h2 {

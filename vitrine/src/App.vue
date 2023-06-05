@@ -47,6 +47,8 @@ header {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: var(--color-background);
+
 }
 
 .header {
@@ -57,7 +59,6 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--color-background);
   z-index: 1;
 }
 

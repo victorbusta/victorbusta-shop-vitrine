@@ -6,6 +6,7 @@ import {
   Param,
   Query,
   Post,
+  Response,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { UpdateOrderDto } from './dto/update-order.dto';
@@ -22,6 +23,12 @@ export class OrderController {
   @Get(':id/verify')
   verify(@Param('id') id: number, @Query('token') token: string) {
     return this.orderService.verify(+id, token);
+  }
+
+  @Public()
+  @Get(':id/shipping')
+  shipping(@Param('id') id: number, @Query('token') token: string) {
+    return this.orderService.shipping(+id, token);
   }
 
   @Public()

@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import type { CheckoutPrint } from '@/interfaces/print';
 import FormatComp from '@/components/FormatComponent.vue';
-import LoadingIcon from '@/components/icons/IconLoading.vue';
 
 const props = defineProps({
   print: { type: Object as () => CheckoutPrint, required: true },

@@ -53,11 +53,11 @@ model Order {
 }
 
 model Order_Format {
+  id Int @id @default(autoincrement())
+
   order_id Int
   order    Order @relation(fields: [order_id], references: [id])
 
   format_id Int
   format    Format @relation(fields: [format_id], references: [id])
-
-  @@unique(fields: [order_id, format_id], name: "relation_id")
 }

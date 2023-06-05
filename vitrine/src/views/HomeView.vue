@@ -16,11 +16,9 @@ const printsLoaded = ref(false);
 const fetchPrints = async () => {
   try {
     const res = await HTTP.get('/print');
-    const printRes: Print[] = res.data;
+    prints.value = res.data;
 
-    printRes.forEach((print) => {
-      HTTP.get(`/print/${print.id}`).then(printData => prints.value[print.id] = printData.data);
-    })
+    console.log(prints.value);
 
     printsLoaded.value = true;
   } catch (error) {
@@ -69,7 +67,7 @@ const closeModal = async () => {
 
   <div class="modal" >
     <CloseIcon height="64px" width="64px" style="z-index: 1;" @click="closeModal" :dark="false"/>
-    <PrintCard v-if="modalOpened" :print="modalPrint as Print" :printUrl="printsUrl[modalPrint?.id ?? 1]"/>
+    <PrintCard v-if="modalOpened" :print="modalPrint as Print" />
   </div>
 
 </template>

@@ -1,7 +1,9 @@
+import { Print } from '@prisma/client';
+
 export class Format {
   id: number;
-  print_id: number;
   label: string;
   size: string;
   price: number;
+  print: Print;
 }

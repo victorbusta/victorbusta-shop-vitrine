@@ -8,6 +8,11 @@ export class PrintService {
   constructor(private prisma: PrismaService) {}
 
   create(createPrintDto: CreatePrintDto) {
+    createPrintDto.documentUrl = `https://images.vanbutselediane.com/${createPrintDto.title.replace(
+      /\s/gi,
+      '%20',
+    )}.jpg`;
+
     return this.prisma.print.create({
       data: createPrintDto,
     });
@@ -27,6 +32,7 @@ export class PrintService {
         id: true,
         title: true,
         documentUrl: true,
+        formats: true,
       },
     });
   }
@@ -37,6 +43,7 @@ export class PrintService {
       select: {
         id: true,
         title: true,
+        documentUrl: true,
         formats: true,
       },
     });

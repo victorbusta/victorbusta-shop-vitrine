@@ -25,7 +25,7 @@ const checkoutFields: FormField[] = [
 
 
       <div class="checkoutAble" v-for="print in checkoutPrints" :key="print.id">
-        <CheckoutableCard :print="print" apiEndPoint="/order" />
+        <CheckoutableCard :print="print"/>
         <hr>
       </div>
 

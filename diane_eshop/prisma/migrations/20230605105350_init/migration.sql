@@ -46,10 +46,11 @@ CREATE TABLE `Order` (
 
 -- CreateTable
 CREATE TABLE `Order_Format` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `order_id` INTEGER NOT NULL,
     `format_id` INTEGER NOT NULL,
 
-    UNIQUE INDEX `Order_Format_order_id_format_id_key`(`order_id`, `format_id`)
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey

@@ -28,8 +28,6 @@ const orderSending = ref(false);
 function handleSubmit() {
   orderSending.value = true;
 
-
-
   let formData: any = {};
   fields.value.forEach((field) => {
     formData[field.id] = field.value;
@@ -40,6 +38,8 @@ function handleSubmit() {
   checkoutStore.prints.forEach(print => {
     formData.formats_id.push(print.format.id);
   });
+
+  console.log(formData);
 
   HTTP.post(props.apiEndPoint, formData).then(res => {
     order.value = res.data;
@@ -79,7 +79,7 @@ function handleSubmit() {
 
   <div v-else-if="orderSending && orderSend">
     <h2>La commande n#{{ order.id }} est bien envoyée !</h2>
-    <h3>Merci de bien vérifier votre boîte mail et de cliquer sur le lien pour valider la prise de commande</h3>
+    <h3>Merci de bien vérifier ta boîte mail et de cliquer sur le lien pour valider la prise de commande</h3>
   </div>
 
 </template>

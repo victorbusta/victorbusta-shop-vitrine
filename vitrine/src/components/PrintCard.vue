@@ -5,6 +5,9 @@ import type { Print } from '@/interfaces/print';
 const props = defineProps({
   print: { type: Object as () => Print, required: true },
 })
+
+console.log(props.print);
+
 </script>
 
 <template>
@@ -51,9 +54,6 @@ const props = defineProps({
 
   .card {
     width: 100vw;
-    height: fit-content;
-    min-height: calc(40vh - 64px);
-    max-height: fit-content;
     padding: 0 4vw;
     background-color: var(--color-background);
     display: flex;

@@ -4,6 +4,5 @@ export class CreatePrintDto {
   @ApiProperty()
   title: string;
 
-  @ApiProperty()
   documentUrl: string;
 }

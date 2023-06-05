@@ -35,6 +35,14 @@ checkoutStore.initData();
   <main>
     <RouterView />
   </main>
+
+  <hr>
+
+  <footer>
+    <h4 style="text-align: center;">
+    Les droits d'auteur des photos sont détenus par Van Butsele Diane et leur commercialisation n'est autorisée qu'en sa possession.
+    </h4>
+  </footer>
 </template>
 
 <style scoped>

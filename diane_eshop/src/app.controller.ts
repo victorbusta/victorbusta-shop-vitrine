@@ -27,4 +27,10 @@ export class AppController {
   async login(@Request() req: any, @Body() login: LoginDto) {
     return this.authService.login(req.user);
   }
+
+  @Public()
+  @Get('')
+  async hello(@Request() req: any, @Body() login: LoginDto) {
+    return '<h1>Success</h1>';
+  }
 }

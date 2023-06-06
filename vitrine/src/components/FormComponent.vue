@@ -39,8 +39,6 @@ function handleSubmit() {
     formData.formats_id.push(print.format.id);
   });
 
-  console.log(formData);
-
   HTTP.post(props.apiEndPoint, formData).then(res => {
     order.value = res.data;
     orderSend.value = true;

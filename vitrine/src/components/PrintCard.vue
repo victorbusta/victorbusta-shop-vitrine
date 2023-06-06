@@ -5,9 +5,6 @@ import type { Print } from '@/interfaces/print';
 const props = defineProps({
   print: { type: Object as () => Print, required: true },
 })
-
-console.log(props.print);
-
 </script>
 
 <template>

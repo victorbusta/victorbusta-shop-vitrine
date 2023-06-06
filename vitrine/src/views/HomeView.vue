@@ -18,8 +18,6 @@ const fetchPrints = async () => {
     const res = await HTTP.get('/print');
     prints.value = res.data;
 
-    console.log(prints.value);
-
     printsLoaded.value = true;
   } catch (error) {
     console.error(error);

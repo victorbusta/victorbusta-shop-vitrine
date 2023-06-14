@@ -10,7 +10,6 @@ import * as anim from '@/utils.animation';
 const prints = ref<Print[]>([]);
 const modalPrint = ref<Print>();
 const modalOpened = ref(false);
-const printsUrl = ref<string[]>([]);
 const printsLoaded = ref(false);
 
 const fetchPrints = async () => {
@@ -42,6 +41,11 @@ const closeModal = async () => {
   modalOpened.value = false;
 }
 
+const showImg = (e: Event) => {
+  const parent: HTMLElement | null = (e.target as HTMLElement).parentElement;
+  parent?.classList.add('image-container-loaded');
+}
+
 </script>
 
 <template>
@@ -49,13 +53,13 @@ const closeModal = async () => {
 
     <div class="image-gallery">
       <div v-for="print in evenPrints()" :key="print.id" class="image-container" @click="showModal(print)" >
-        <img :src="print.documentUrl">
+        <img :src="print.documentUrl" @load="$e => showImg($e)">
       </div>
     </div>
 
     <div class="image-gallery">
       <div v-for="print in oddPrints()" :key="print.id" class="image-container" @click="showModal(print)" >
-        <img :src="print.documentUrl">
+        <img :src="print.documentUrl" @load="$e => showImg($e)">
       </div>
     </div>
 
@@ -68,6 +72,15 @@ const closeModal = async () => {
     <PrintCard v-if="modalOpened" :print="modalPrint as Print" />
   </div>
 
+
+  <hr>
+
+  <footer>
+    <h4 style="text-align: center;">
+    Les droits d'auteur des photos sont détenus par Van Butsele Diane et leur commercialisation n'est autorisée qu'en sa possession.
+    </h4>
+  </footer>
+
 </template>
 
 <style scoped>
@@ -75,6 +88,14 @@ const closeModal = async () => {
   display: flex;
   justify-content: center;
   align-items: start;
+}
+
+hr {
+  position: sticky;
+  top: 72px;
+  width: 90%;
+  margin: 0 5%;
+  stroke: var(--color-foreground);
 }
 
 .image-gallery {
@@ -89,6 +110,13 @@ const closeModal = async () => {
   height: fit-content;
   padding: 10px;
   transition: all ease-in-out .2s;
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.image-container-loaded {
+  transform: translateY(0);
+  opacity: 1;
 }
 
 .image-container:hover {
@@ -97,6 +125,7 @@ const closeModal = async () => {
 
 img {
   width: 100%;
+  transition: all .5s ease-in-out;
 }
 
 .modal {
@@ -115,7 +144,7 @@ img {
   background-color: aliceblue;
 }
 
-@media screen and (min-width: 1023px) {
+@media (min-width: 1023px) {
   .image-gallery {
     width: 30vw;
   }

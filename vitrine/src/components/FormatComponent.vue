@@ -42,12 +42,16 @@ const removeFromCart = () => {
   checkoutStore.removePrint(checkoutAble.value);
   storedNb.value = checkoutStore.getStoredNb(checkoutAble.value);
 }
+
+const capitalizeFirstLetter = (string: string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 </script>
 
 <template>
   <div class="formatwrapper">
     <div class="desc">
-      <h2>Taille: {{ checkoutAble.format.size }}</h2>
+      <h2>{{ checkoutAble.format.size }} ({{ capitalizeFirstLetter(checkoutAble.format.label) }})</h2>
       <h3>Prix: {{ checkoutAble.format.price }} €</h3>
     </div>
 

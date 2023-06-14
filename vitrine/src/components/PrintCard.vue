@@ -12,7 +12,7 @@ const props = defineProps({
   <div class="wrapper">
 
     <div class="imgwrapper">
-      <img :src="print.documentUrl">
+      <img :src="print.documentUrl" loading="lazy">
     </div>
 
     <div class="card">

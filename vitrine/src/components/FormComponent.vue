@@ -119,7 +119,6 @@ hr {
   font-size: var(--font-size-medium-medium);
   border: solid 1px var(--color-foreground);
   width: fit-content;
-  font-family: 'CopperPlate Goth';
 }
 
 .order:hover {

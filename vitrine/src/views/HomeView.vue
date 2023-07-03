@@ -6,6 +6,7 @@ import { ref } from 'vue';
 import { HTTP } from '@/http';
 import type { Print } from '@/interfaces/print';
 import * as anim from '@/utils.animation';
+import VLazyImage from "v-lazy-image";
 
 const prints = ref<Print[]>([]);
 const modalPrint = ref<Print>();
@@ -41,31 +42,49 @@ const closeModal = async () => {
   modalOpened.value = false;
 }
 
-const showImg = (e: Event) => {
-  const parent: HTMLElement | null = (e.target as HTMLElement).parentElement;
-  parent?.classList.add('image-container-loaded');
+const keyframes = [
+        { opacity: 0, transform: 'translateY(100%)' },
+        { opacity: 1, transform: 'translateY(0)' }
+      ];
+
+const showImg = (e: Event, printId: number) => {
+  console.log(printId);
+  
+  const parent = document.querySelector(`.image${printId}`);
+  parent?.animate(keyframes, {
+        duration: 500,
+        fill: 'forwards',
+        delay: 100 * printId,
+        easing: 'ease',
+        iterations: 1,
+      });
 }
 
 </script>
 
 <template>
-  <div class="wrapper">
+  <div class="wrapper" v-if="printsLoaded">
 
     <div class="image-gallery">
-      <div v-for="print in evenPrints()" :key="print.id" class="image-container" @click="showModal(print)" >
-        <img :src="print.documentUrl" @load="$e => showImg($e)">
+      <div v-for="print in evenPrints()" :key="print.id" :class="`image-container image${print.id}`" @click="showModal(print)" >
+        <VLazyImage :src="print.documentUrl" @load="($e: Event) => showImg($e, print.id)"/>
       </div>
     </div>
 
     <div class="image-gallery">
-      <div v-for="print in oddPrints()" :key="print.id" class="image-container" @click="showModal(print)" >
-        <img :src="print.documentUrl" @load="$e => showImg($e)">
+      <div v-for="print in oddPrints()" :key="print.id" :class="`image-container image${print.id}`" @click="showModal(print)" >
+        <VLazyImage :src="print.documentUrl" @load="($e: Event) => showImg($e, print.id)"/>
       </div>
-    </div>
+    </div> 
 
   </div>
 
-  <LoadingIcon style="width: 128px; height: 128px;" v-if="!printsLoaded"/>
+  <div v-else style="display: flex; flex-direction: column; align-items: center;">
+    <LoadingIcon style="width: 128px; height: 128px;"/>
+    <h1 style="text-align: center;">
+      Photos en cours de chargement
+    </h1>
+  </div>
 
   <div class="modal" >
     <CloseIcon height="64px" width="64px" style="z-index: 1;" @click="closeModal" :dark="false"/>
@@ -84,6 +103,12 @@ const showImg = (e: Event) => {
 </template>
 
 <style scoped>
+.refa-all{
+  width: 100%;
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
 .wrapper {
   display: flex;
   justify-content: center;
@@ -107,15 +132,21 @@ hr {
 
 .image-container {
   width: 100%;
+  min-height: 10vh;
   height: fit-content;
   padding: 10px;
-  transition: all ease-in-out .2s;
-  transform: translateY(100%);
   opacity: 0;
+  transform: translateY(100%);
+  transition: all 200ms ease-in-out;
+}
+
+@keyframes show {
+  100%{
+    opacity: 1;
+  }
 }
 
 .image-container-loaded {
-  transform: translateY(0);
   opacity: 1;
 }
 

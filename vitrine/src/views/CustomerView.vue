@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { useCheckoutStore } from '../store/checkoutStore';
-import { ref } from 'vue'
 import type { FormField } from '@/interfaces/form';
+import ArrowIcon from '@/components/icons/IconArrow.vue';
 import FormComponent from '@/components/FormComponent.vue';
 
 const checkoutFields: FormField[] = [
@@ -19,6 +18,15 @@ const checkoutFields: FormField[] = [
     <h1>Information client</h1>
     <hr style="width: 90%;">
     <FormComponent :fields="checkoutFields" apiEndPoint="order" />
+
+    <div class="bottomNav">
+      <RouterLink to="/checkout" class="back">
+        <ArrowIcon style="width: 32px; height: 32px;" />
+      </RouterLink>
+      <RouterLink to="/customer">
+        <input class="order" type="submit" value="Commander">
+      </RouterLink>
+    </div>
   </div>
 </template>
 
@@ -33,7 +41,6 @@ const checkoutFields: FormField[] = [
 }
 
 hr {
-  width: 80%;
   opacity: .5;
   margin-bottom: 16px;
 }
@@ -46,4 +53,32 @@ h1 {
   font-size: var(--font-size-big-small);
 }
 
+.order {
+  height: fit-content;
+  width: fit-content;
+  padding: 8px;
+  font-size: var(--font-size-medium-medium);
+  border: solid 1px var(--color-foreground);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  width: fit-content;
+  font-family: 'CopperPlate Goth';
+}
+
+.order:hover {
+  color: var(--color-background);
+  background-color: var(--color-foreground);
+}
+
+.back {
+  position: absolute;
+  left: 0;
+}
+.bottomNav {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 8px 4px;
+}
 </style>

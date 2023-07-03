@@ -5,41 +5,46 @@ import IconInsta from '@/components/icons/IconInsta.vue'
 </script>
 
 <template>
-  <div class="info">
-    <h1>À propos</h1>
-    <p>
-      <span>Diane</span> Van Butsele est actuellement une jeune étudiante en photographie. Elle a commencé par des études d’histoire, puis sa passion prit au fur et à mesure le dessus. Elle souhaite désormais se professionaliser pour ce 8ème art.
-    </p>
-    <p>
-      <span>Attirée</span> par les scènes quotidiennes tout en y cherchant de la beauté, la photographie vernaculaire fait partie intégrante de son style. Grande amoureuse de la marche, l’errance est également visible dans nombreuses de ses oeuvres.
-    </p>
-    <p>
-      <span>N’ayant</span> pas encore un style bien défini, Diane vous invite à découvrir ses univers et est fière de pouvoir vous toucher à travers son travail et de le voir proner sur vos murs.
-    </p>
-    <h2>
-      Bonne visite.
-    </h2>
-  </div>
+  <div id="about">
 
-  <hr>
-
-  <div class="info">
-    <div class="contact">
-      <a href="mailto:vanbutseldiane@gmail.com"><IconMail height="32px"/> vanbutseldiane<wbr>@gmail.com</a>
-      <a href="tel:+33619336936"><IconPhone height="32px"/>+33 6 19 33 69 36</a>
-      <a href="https://www.instagram.com/vaanbutsele/"><IconInsta height="32px"/>vaanbutsele</a>
+    <div id="intro">
+      <p>
+        <span>Diane</span> Van Butsele est actuellement une jeune étudiante en photographie. Elle a commencé par des études d’histoire, puis sa passion prit au fur et à mesure le dessus. Elle souhaite désormais se professionaliser pour ce 8ème art.
+      </p>
+      <p>
+        <span>Attirée</span> par les scènes quotidiennes tout en y cherchant de la beauté, la photographie vernaculaire fait partie intégrante de son style. Grande amoureuse de la marche, l’errance est également visible dans nombreuses de ses oeuvres.
+      </p>
+      <p>
+        <span>N’ayant</span> pas encore un style bien défini, Diane vous invite à découvrir ses univers et est fière de pouvoir vous toucher à travers son travail et de le voir proner sur vos murs.
+      </p>
+      <h2>
+        Bonne visite.
+      </h2>
     </div>
-  </div>
 
+    <div class="contact">
+      <a href="mailto:vanbutseldiane@gmail.com"><IconMail height="32px"/><h2>vanbutseldiane@gmail.com</h2></a>
+      <a href="tel:+33619336936"><IconPhone height="32px"/><h2>+33 6 19 33 69 36</h2></a>
+      <a href="https://www.instagram.com/vaanbutsele/"><IconInsta height="32px"/><h2>vaanbutsele</h2></a>
+    </div>
+
+  </div>
 </template>
 
 <style scoped>
-.info {
+#about {
   width: 60vw;
+  min-height: calc(100vh - 64px);
+  height: fit-content;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: justify;
+  justify-content: space-evenly;
+  /* text-align: justify; */
+}
+
+h1 {
+  width: 100%;
 }
 
 p {
@@ -48,12 +53,6 @@ p {
 
 p > span {
   margin-left: 2em;
-}
-
-hr {
-  margin: 16px 0;
-  height: 1px;
-  width: 70vw;
 }
 
 .contact {
@@ -76,9 +75,19 @@ a:hover {
   text-decoration: underline;
 }
 
+h2 {
+  font-size: 16px;
+}
+
 @media (max-width: 768px) {
-  .info {
+  #about {
     width: 80vw;
+  }
+}
+
+@media (max-width: 425px) {
+  h2 {
+    display: none;
   }
 }
 </style>

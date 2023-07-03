@@ -56,17 +56,7 @@ function handleSubmit() {
       <div class="formInput" v-for="field in fields" :key="field.id">
         <input :type="field.type" :id="field.id" v-model="field.value" :placeholder="field.label" required/>
         <hr>
-      </div> 
-
-      <hr style="width: 100%;">
-
-    <div class="bottomNav">
-      <RouterLink to="/checkout" class="back">
-        <ArrowIcon style="width: 32px; height: 32px;" />
-      </RouterLink>
-      <input class="order" type="submit" value="Commander">
-    </div>
-
+      </div>
     </form>
 
   </div>

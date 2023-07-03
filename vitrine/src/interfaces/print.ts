@@ -12,6 +12,7 @@ export interface Print {
   title: string;
   documentUrl: string;
   formats: Format[];
+  loaded: boolean; // Add the loaded property to the Print interface
 }
 
 export interface CheckoutPrint {

@@ -21,7 +21,3 @@ a {
   text-decoration: none;
   transition: 0.4s;
 }
-
-h1 {
-  font-size: var(--font-size-big-small);
-}

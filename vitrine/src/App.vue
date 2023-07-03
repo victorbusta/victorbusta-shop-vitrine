@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import CartIcon from './components/icons/IconCart.vue';
-import IconAbout from './components/icons/IconAbout.vue';
-import { computed } from 'vue';
+import MainLogo from './components/MainLogo.vue';
+import { computed, ref, watch } from 'vue';
 import { useCheckoutStore } from './store/checkoutStore';
 
 const checkoutStore = useCheckoutStore();
@@ -10,30 +10,46 @@ const checkoutStore = useCheckoutStore();
 const articleCount = computed(() => checkoutStore.articleCount);
 
 checkoutStore.initData();
+
+// scroll indicator handling and paralax
+
+const scrollIndicatorWidth = ref(0);
+const scrollIndicatorStyle = ref('');
+
+const handleScroll = () => {
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  const scrollHeight =
+    document.documentElement.scrollHeight -
+    document.documentElement.clientHeight;
+  const progress = (scrollTop / scrollHeight) * 100;
+  scrollIndicatorWidth.value = progress;
+};
+
+window.addEventListener('scroll', handleScroll);
+
+watch(scrollIndicatorWidth, () => {  
+  scrollIndicatorStyle.value = `width: ${scrollIndicatorWidth.value}%`;
+});
 </script>
 
 <template>
   <header>
-      <RouterLink to="/" class="logo">
-        <h1>Van</h1>
-        <h1>Butsele</h1>
-        <h1>Diane</h1>
+      <RouterLink to="/">
+        <MainLogo/>
       </RouterLink>
 
       <nav>
 
         <RouterLink to="/about" class="navlink">
-          <div class="about">
-            <IconAbout height="24px"/>
-          </div>
+          <h2>À propos</h2>
         </RouterLink>
 
         <RouterLink to="/checkout" class="panier">
           <div class="cartContainer">
             <CartIcon height="24px"/>
-          </div>
-          <div class="itemNb">
-            <h4>{{articleCount}}</h4>
+            <div class="itemNb">
+              <h4>{{articleCount}}</h4>
+            </div>
           </div>
         </RouterLink>
 
@@ -41,7 +57,7 @@ checkoutStore.initData();
 
   </header>
 
-  <hr>
+  <div class="scroll-indicator" :style="scrollIndicatorStyle"></div>
 
   <main>
     <RouterView />
@@ -50,10 +66,10 @@ checkoutStore.initData();
 
 <style scoped>
 header {
-  position: sticky;
+  position: fixed;
   top: 0;
-  width: 100vw;
-  height: 64px;
+  width: 100%;
+  height: 48px;
   z-index: 1;
   display: flex;
   justify-content: space-between;
@@ -61,118 +77,71 @@ header {
   background: var(--color-background);
 }
 
+.scroll-indicator {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  height: 4px;
+  width: 0;
+  background-color: var(--color-foreground);
+  z-index: 1;
+}
+
+main {
+  position: relative;
+  top: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 nav {
+  position: relative;
   display: flex;
-  transform: translateX(-8px);
-}
-
-.panier {
-  display: flex;
-}
-
-h1 {
-  margin-left: 8px;
-  font-family: 'CopperPlate Goth';
-  color: var(--color-foreground);
-  font-size: var(--font-size-medium);
-}
-
-.logo {
-  display: flex;
-  transform: translateX(-100%);
-  opacity: 0;
-  animation: normallogo .2s linear forwards;
-}
-
-.logo > h1:nth-child(2) {
-  transform: translateX(-100%);
-  animation: normal .2s linear .2s forwards;
-}
-
-.logo > h1:nth-child(3) {
-  transform: translateX(-255%);
-  animation: normal .2s linear .3s forwards;
-}
-
-@keyframes normal {
-  100% {
-    transform: translateX(0);
-  }
-}
-
-@keyframes normallogo {
-  60% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  align-items: center;
+  transform: translateX(-22.4px);
 }
 
 .cartContainer {
+  position: relative;
   border: solid 1px var(--color-foreground);
-  width: 48px;
-  height: 48px;
+  width: 32px;
+  height: 32px;
   display: flex;
+
   align-items: center;
   margin: 8px;
 }
 
-#fullcart {
-  transform: translateX(-2px);
-}
-
 .navlink {
   color: var(--color-foreground);
-  height: 48px;
-  margin: 8px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-h2 {
+.navlink > h2 {
   height: 100%;
   width: 100%;
   padding: 0 8px;
   display: flex;
   align-items: center;
+  border-radius: 4px;
 }
 
 .itemNb {
   position: absolute;
-  padding: 4px;
-  width: 32px;
-  height: 32px;
-  transform: translate(38px, 38px);
+  top: 70%;
+  left: 70%;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background-color: var(--color-foreground);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--color-background);
-}
-
-hr {
-  position: sticky;
-  top: 64px;
-  width: 80vw;
-  margin: 0 10vw;
-  stroke: var(--color-foreground);
-}
-
-.about {
-  height: 48px;
-  width: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform: translateX(8px);
-}
-
-nav > .router-link-active > .about {
-  background-color: var(--color-foreground);
 }
 
 nav > .router-link-active > .cartContainer {
@@ -185,13 +154,6 @@ nav > .router-link-active > h2 {
   color: var(--color-background);
 }
 
-
-main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 h3 {
   border-radius: 6px;
   padding: 4px;
@@ -202,15 +164,6 @@ h3 {
 }
 
 @media (max-width: 768px) {
-  .logo {
-    flex-direction: column;
-  }
-
-  h1 {
-    font-size: var(--font-size-medium-small);
-    height: 20px;
-  }
-
   h2 {
     font-size: var(--font-size-small);
   }

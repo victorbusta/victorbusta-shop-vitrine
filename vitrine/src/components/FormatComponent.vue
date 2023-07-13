@@ -1,145 +1,120 @@
 <script setup lang="ts">
-import CartIcon from './icons/IconCart.vue';
-import CloseIcon from './icons/IconClose.vue';
-import { ref } from 'vue';
-import { useCheckoutStore } from '../store/checkoutStore'
-import { defineProps } from 'vue'
-import type { Print, Format, CheckoutPrint } from '@/interfaces/print';
-
-const props = defineProps({
-  print: {
-    type: Object as () => Print | null,
-    required: false,
-  },
-  format: {
-    type: Object as () => Format | null,
-    required: false,
-  },
-  checkoutAble: {
-    type: Object as () => CheckoutPrint | null,
-    required: false,
-  },
-});
+import type { OrderFormat, Print, Format } from '@/interfaces/print';
+import { useCheckoutStore } from '@/store/checkoutStore';
 
 const checkoutStore = useCheckoutStore();
 
-const checkoutAble = ref(props.checkoutAble ?? {
-  id: props.print?.id,
-  title: props.print?.title,
-  format: props.format,
-  documentUrl: props.print?.documentUrl,
-} as CheckoutPrint)
+const props = defineProps({
+  print: { 
+    type: Object as () => Print,
+    required: true 
+  },
+})
 
-const stored = ref(false);
-const storedNb = ref(checkoutStore.getStoredNb(checkoutAble.value));
+const getStoredNb = (format: Format) => checkoutStore.getStoredNb(format.id);
 
 const addToCart = () => {
-    checkoutStore.addPrint(checkoutAble.value);
-    storedNb.value = checkoutStore.getStoredNb(checkoutAble.value);
-}
+  document.querySelectorAll('#selection').forEach(selectElem => {
+    const formatId = Number(selectElem.getAttribute('value'))
+    const qty = Number(selectElem.querySelector('select')?.value);
+    const withFrame = Boolean(selectElem.querySelector('input')?.checked);
+    const format = props.print.formats.filter((format: Format) => format.id === formatId);
 
-const removeFromCart = () => {
-  checkoutStore.removePrint(checkoutAble.value);
-  storedNb.value = checkoutStore.getStoredNb(checkoutAble.value);
-}
+    checkoutStore.updateFormats({
+      format: format[0],
+      with_frame: withFrame,
+      qty: qty
+    });
+  });
+};
 
-const capitalizeFirstLetter = (string: string) => {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
+defineExpose({
+  addToCart,
+});
 </script>
 
 <template>
-  <div class="formatwrapper">
-    <div class="desc">
-      <h2>{{ checkoutAble.format.size }} ({{ capitalizeFirstLetter(checkoutAble.format.label) }})</h2>
-      <h3>Prix: {{ checkoutAble.format.price }} €</h3>
-    </div>
+  <h1>Formats disponible :</h1>
 
-    <div class="pricewrapper">
-
-      <span class="storeAction minus" @click="removeFromCart">
-        <div></div>
+  <div id="format" v-for="format in props.print.formats" :key="format.id">
+    <div class="line">
+      <span>
+        <h2>{{ format.size }} (sans cadre)<br>{{ format.price }} €</h2>
+        <h2 id="frame">{{ format.size_frame }} (avec cadre)<br>{{ format.price_frame }} €</h2>
       </span>
 
-      <span class="storeAction plus" @click="addToCart">
-        <div></div>
-        <div></div>
-      </span>
-
-      <span class="storedNb">
-        <h2>{{ storedNb }}</h2>
-      </span>
+      <div id="selection" :value="format.id">
+        <span>
+          <h5>avec cadre</h5>
+          <input id="with_frame" type="checkbox">
+        </span>
+        <select name="quantity" id="print_quantity">
+          <option value="0">0</option>
+          <option v-for="qty in print.current_number" :key="qty" :value="qty" :selected="qty === getStoredNb(format)">{{ qty }}</option>
+        </select>
+      </div>
 
     </div>
   </div>
 </template>
 
 <style scoped>
-.formatwrapper {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  margin: 8px 0;
-}
+  #format {
+    margin: 8px 8px;
+  }
 
-h2 {
-  font-size: var(--font-size-medium-small);
-  width: fit-content;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  h1 {
+    margin-top: 8px;
+    font-size: 24px;
+    width: fit-content;
+    margin-left: 4px;
+    border-bottom: 1px solid var(--color-foreground);
+    line-height: 16px;
+  }
 
-h3 {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: var(--font-size-medium-small);
-  opacity: .7;
-}
+  h2 {
+    font-size: 18px;
+    line-height: 16px;
+  }
 
-.desc {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-}
+  #frame {
+    font-size: 16px;
+    opacity: .8;
+  }
 
-.pricewrapper {
-  height: 100%;
-  display: flex;
-  align-items: center;
-}
+  .line {
+    display: flex;
+    justify-content: space-between;
+  }
 
-.storedNb {
-  border: solid 1px var(--color-foreground);
-  width: 32px;
-  height: 32px;
-  margin-left: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  #selection {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+  }
 
-.storeAction {
-  margin: 0 4px;
-  border: solid 1px var(--color-foreground);
-  height: 32px;
-  width: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  #selection > span {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: 8px;
+  }
 
-.storeAction > div {
-  position: absolute;
-  width: 60%;
-  height: 10%;
-  background-color: var(--color-foreground);
-  border-radius: 8px;
-}
+  h5 {
+    font-size: 12px;
+    line-height: 8px;
+    margin-bottom: 4px;
+  }
 
-.plus > div:first-child {
-  rotate: 90deg;
-}
+  input {
+    height: 16px;
+    width: 16px;
+  }
+
+  select {
+    height: 24px;
+    overflow: auto;
+  }
 </style>

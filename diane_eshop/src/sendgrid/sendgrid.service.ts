@@ -12,7 +12,7 @@ export class SendGridService {
     sgMail.setApiKey(apiKey);
   }
 
-  async sendClient(order: Order, formats: Format[], token: string) {
+  async sendClient(order: Order, formats: any[], token: string) {
     const link = `${process.env.APP_URL}order/${order.id}/verify?token=${token}`;
 
     const msg = {
@@ -24,7 +24,7 @@ export class SendGridService {
     return sgMail.send(msg);
   }
 
-  async sendAdmin(order: Order, formats: Format[], token: string) {
+  async sendAdmin(order: Order, formats: any[], token: string) {
     const link = `${process.env.APP_URL}order/${order.id}/shipping?token=${token}`;
 
     const msg = {

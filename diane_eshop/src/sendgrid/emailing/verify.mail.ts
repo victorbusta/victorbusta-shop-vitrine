@@ -1,10 +1,8 @@
 import { Order, Print } from '@prisma/client';
-import { link } from 'fs';
-import { Format } from 'src/resources/format/entities/format.entity';
 
 export const getVerifyMail = (
   order: Order,
-  formats: Format[],
+  formats: any[],
   link: string,
 ): string => `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html data-editor-version="2" class="sg-campaigns" xmlns="http://www.w3.org/1999/xhtml">
@@ -186,7 +184,7 @@ ${addPrints(formats)}<div></div></div></td>
       <tr>
         <td style="padding:18px 0px 18px 0px; line-height:30px; text-align:inherit;" height="100%" valign="top" bgcolor="" role="module-content"><div><h2 style="text-align: inherit">💸 Prix Total:&nbsp;${getTotalPrice(
           formats,
-        )}</h2><div></div></div></td>
+        )} €</h2><div></div></div></td>
       </tr>
     </tbody>
   </table><table class="module" role="module" data-type="divider" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-muid="ec62f516-ddbe-4ecc-b2aa-11a9a3038ba7">
@@ -248,15 +246,23 @@ ${addPrints(formats)}<div></div></div></td>
     </body>
   </html>`;
 
-const addPrints = (formats: Format[]): string => {
+const addPrints = (formats: any[]): string => {
   const _formats = formats.map(
     (
       format,
-    ) => `<li style="text-align: inherit; font-family: &quot;times new roman&quot;, times, serif; font-size: 18px; font-size: 18px"><span style="font-family: &quot;times new roman&quot;, times, serif; font-size: 18px">Print n#${format.print.id}:</span>
+    ) => `<li style="text-align: inherit; font-family: &quot;times new roman&quot;, times, serif; font-size: 18px; font-size: 18px"><span style="font-family: &quot;times new roman&quot;, times, serif; font-size: 18px">Print n#${
+      format.print.id
+    }:</span>
       <ul>
-        <li style="text-align: inherit; font-family: &quot;times new roman&quot;, times, serif; font-size: 18px; font-size: 18px"><span style="font-family: &quot;times new roman&quot;, times, serif; font-size: 18px">url: <b>${format.print.documentUrl}</b></span></li>
-        <li style="text-align: inherit; font-family: &quot;times new roman&quot;, times, serif; font-size: 18px; font-size: 18px"><span style="font-family: &quot;times new roman&quot;, times, serif; font-size: 18px">price: <b>${format.price}€</b></span></li>
-        <li style="text-align: inherit; font-family: &quot;times new roman&quot;, times, serif; font-size: 18px; font-size: 18px"><span style="font-family: &quot;times new roman&quot;, times, serif; font-size: 18px">format: <b>${format.size}</b></span></li>
+        <li style="text-align: inherit; font-family: &quot;times new roman&quot;, times, serif; font-size: 18px; font-size: 18px"><span style="font-family: &quot;times new roman&quot;, times, serif; font-size: 18px">url: <b>${
+          format.print.documentUrl
+        }</b></span></li>
+        <li style="text-align: inherit; font-family: &quot;times new roman&quot;, times, serif; font-size: 18px; font-size: 18px"><span style="font-family: &quot;times new roman&quot;, times, serif; font-size: 18px">price: <b>${
+          format.with_frame ? format.price_frame : format.price
+        }€</b></span></li>
+        <li style="text-align: inherit; font-family: &quot;times new roman&quot;, times, serif; font-size: 18px; font-size: 18px"><span style="font-family: &quot;times new roman&quot;, times, serif; font-size: 18px">format: <b>${
+          format.with_frame ? format.size_frame + ' (avec cadre)' : format.size
+        }</b></span></li>
       </ul>
     </li>
     </ul>`,
@@ -265,10 +271,13 @@ const addPrints = (formats: Format[]): string => {
   return _formats.join('');
 };
 
-const getTotalPrice = (formats: Format[]): string => {
+const getTotalPrice = (formats: any[]): string => {
   let price = 0;
 
-  formats.forEach((format) => (price += format.price));
+  formats.forEach(
+    (format) =>
+      (price += format.with_frame ? format.price_frame : format.price),
+  );
 
   return `${price}`;
 };

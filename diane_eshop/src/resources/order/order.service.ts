@@ -86,13 +86,16 @@ export class OrderService {
               price: true,
               label: true,
               size: true,
+              price_frame: true,
+              size_frame: true,
             },
           },
+          with_frame: true,
         },
       })
       .then((order_formats) =>
         order_formats.map((val) => {
-          return { ...val.format };
+          return { ...val.format, with_frame: val.with_frame };
         }),
       );
 
@@ -112,17 +115,27 @@ export class OrderService {
 
   async create(createOrderDto: CreateOrderDto) {
     const formats = await Promise.all(
-      (createOrderDto.formats_id ?? []).map(async (id) => {
-        return this.prisma.format.findUniqueOrThrow({
-          where: { id: id },
-          select: {
-            id: true,
-            price: true,
-            size: true,
-            label: true,
-            print: true,
-          },
-        });
+      (createOrderDto.formats ?? []).map(async (_format) => {
+        return this.prisma.format
+          .findUniqueOrThrow({
+            where: { id: _format.id },
+            select: {
+              id: true,
+              price: true,
+              price_frame: true,
+              size: true,
+              size_frame: true,
+              label: true,
+              print: true,
+            },
+          })
+          .then((format) => {
+            if (format.print.current_number <= 0) {
+              throw new HttpException('no more prints left', 401);
+            }
+
+            return { ...format, with_frame: _format.with_frame };
+          });
       }),
     );
 
@@ -130,7 +143,7 @@ export class OrderService {
       throw new HttpException('no formats given', 401);
     }
 
-    delete createOrderDto.formats_id;
+    delete createOrderDto.formats;
 
     const validationToken = uuidv4();
 
@@ -140,16 +153,41 @@ export class OrderService {
 
     const order = await this.prisma.order.create({ data: createOrderDto });
 
-    const relations: { order_id: number; format_id: number }[] = [];
+    const relations: {
+      order_id: number;
+      format_id: number;
+      with_frame: boolean;
+    }[] = [];
 
     formats.forEach((format) => {
-      relations.push({ order_id: order.id, format_id: format.id });
+      relations.push({
+        order_id: order.id,
+        format_id: format.id,
+        with_frame: format.with_frame,
+      });
       return;
     });
 
     await this.prisma.order_Format.createMany({ data: relations });
 
     await this.sendgrid.sendClient(order, formats, validationToken);
+
+    for (const format of formats) {
+      await this.prisma.format
+        .findUniqueOrThrow({
+          where: { id: format.id },
+          select: { print: true },
+        })
+        .then(async (_format) => {
+          await this.prisma.print.update({
+            where: { id: _format.print.id },
+            data: { current_number: _format.print.current_number - 1 },
+          });
+        })
+        .catch(() => {
+          throw new HttpException('an error occured', 500);
+        });
+    }
 
     return order;
   }

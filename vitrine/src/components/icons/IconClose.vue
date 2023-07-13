@@ -1,49 +1,35 @@
-<script setup lang="ts">
-const props = defineProps({
-  dark: {
-    type: Boolean,
-    required: true,
-  }
-});
-</script>
-
 <template>
-  <div id="cross">
-    <span :class="props.dark ? 'sideDark' : 'side'"></span>
-    <span :class="props.dark ? 'sideDark' : 'side'"></span>
-  </div>
+  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 64 64" >
+    <circle id="base" cx="32" cy="32" r="32"/>
+    <rect id="rect" x="21.8284" y="19" width="32" height="4" transform="rotate(45 21.8284 19)" />
+    <rect id="rect" x="19" y="41.6274" width="32" height="4" transform="rotate(-45 19 41.6274)" />
+  </svg>
 </template>
 
 <style scoped>
-  div {
-    width: 64px;
-    height: 64px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+}
+
+#base {
+    fill: var(--color-background);
   }
 
-  span {
-    position: absolute;
-    width: 100%;
-    height: 10%;
-    border-radius: 4px;
-  }
+#rect {
+  fill: var(--color-foreground);
+  width: 0;
+  animation: grow .2s ease-in-out 1 forwards;
+}
 
-  .side {
-    background-color: var(--color-background);
+@keyframes grow {
+  from {
+    width: 0;
   }
-
-  .sideDark {
-    background-color: var(--color-foreground);
+  to {
+    width: 32px;
   }
-
-  span:nth-child(1) {
-    rotate: 45deg;
-  }
-
-  span:nth-child(2) {
-    rotate: -45deg;
-  }
+}
 </style>
-  

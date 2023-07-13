@@ -10,9 +10,13 @@ CREATE TABLE `Admin` (
 CREATE TABLE `Print` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(191) NOT NULL,
+    `description` VARCHAR(191) NOT NULL,
     `added_date` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `documentUrl` VARCHAR(191) NOT NULL,
+    `initial_number` INTEGER NOT NULL,
+    `current_number` INTEGER NOT NULL,
 
+    UNIQUE INDEX `Print_title_key`(`title`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -22,6 +26,8 @@ CREATE TABLE `Format` (
     `label` VARCHAR(191) NOT NULL,
     `size` VARCHAR(191) NOT NULL,
     `price` INTEGER NOT NULL,
+    `size_frame` VARCHAR(191) NOT NULL,
+    `price_frame` INTEGER NOT NULL,
     `print_id` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -49,6 +55,7 @@ CREATE TABLE `Order_Format` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `order_id` INTEGER NOT NULL,
     `format_id` INTEGER NOT NULL,
+    `with_frame` BOOLEAN NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

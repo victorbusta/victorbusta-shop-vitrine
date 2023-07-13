@@ -17,9 +17,12 @@ model Admin {
 
 model Print {
   id          Int      @id @default(autoincrement())
-  title       String
+  title       String   @unique()
+  description String
   added_date  DateTime @default(now())
   documentUrl String
+  initial_number Int
+  current_number Int
 
   formats Format[]
 }
@@ -29,6 +32,9 @@ model Format {
   label String
   size  String
   price Int
+
+  size_frame  String
+  price_frame Int
 
   print_id Int
   print    Print @relation(fields: [print_id], references: [id])
@@ -60,4 +66,6 @@ model Order_Format {
 
   format_id Int
   format    Format @relation(fields: [format_id], references: [id])
+
+  with_frame Boolean
 }

@@ -1,76 +1,40 @@
 import { defineStore } from 'pinia'
-import type { CheckoutPrint } from '@/interfaces/print';
+import type { OrderFormat } from '@/interfaces/print';
 
 export const useCheckoutStore = defineStore({
   id: 'checkout',
   state: () => ({
-    prints: [] as CheckoutPrint[],
+    formats: [] as OrderFormat[],
   }),
   getters: {
     articleCount(state) {
-      return state.prints.length;
+      let articleCount = 0;
+
+      state.formats.forEach(format => articleCount += format.qty);
+
+      return articleCount;
     },
   },
   actions: {
-    addPrint(this: any, print: CheckoutPrint) {
-      this.prints.push(print);
-      sessionStorage.setItem('prints', JSON.stringify(this.prints));
-    },
-    removePrint(this: any, print: CheckoutPrint) {
-      let removed = false;
-      this.prints.forEach((checkedPrint: CheckoutPrint, key: number) => {
-        if (checkedPrint.format.id === print.format.id && !removed) {          
-          this.prints.splice(key, 1);
-          removed = true;
-        }
-      });
-      sessionStorage.setItem('prints', JSON.stringify(this.prints));
-    },
-    checkStored(this: any, print: CheckoutPrint) {
-      for (const _print in this.prints) {
-        if (this.prints[_print].format.id === print.format.id) 
-          return true;
-      }
-      return false;
-    },
-    getStoredNb(this: any, print: CheckoutPrint) {
-      let stored = 0;
-      this.prints.forEach((_print: CheckoutPrint) => {
-        if (_print.format.id === print.format.id) 
-          stored++;
-      });
-      return stored;
-    },
-    getStored(this: any) {
-      const stored: CheckoutPrint[] = [];
+    updateFormats(this: any, format: OrderFormat) {
+      this.formats = this.formats.filter((_format: OrderFormat) => _format.format.id !== format.format.id);
 
-      for (const printKey in this.prints) {
-        let found = false;
+      if (format.qty !== 0) this.formats.push(format);
 
-        for (const storedKey in stored) {
-          if (JSON.stringify(this.prints[printKey]) == JSON.stringify(stored[storedKey])) {
-            found = true;
-          }
-        }
-
-        if (!found) {
-          stored.push(this.prints[printKey]);
-        }
-      }
-      return stored;
+      sessionStorage.setItem('formats', JSON.stringify(this.formats));
     },
-    resetPrints(this: any) {
-      this.prints = [];
+    getStoredNb(this: any, formatId: number) {      
+      return this.formats.filter((_format: OrderFormat) => _format.format.id === formatId)[0]?.qty;
     },
     initData() {
       // Check if there is data stored in sessionStorage
-      const storedData = sessionStorage.getItem('prints');
+      const storedData = sessionStorage.getItem('formats');
 
       if (storedData) {
         // Parse the stored data and set it as the state value
 
-        JSON.parse(storedData).forEach((print: CheckoutPrint) => {
-          this.prints.push(print);          
+        JSON.parse(storedData).forEach((format: OrderFormat) => {
+          this.formats.push(format);          
         });
       }
     },

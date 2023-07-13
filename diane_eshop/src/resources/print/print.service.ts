@@ -7,25 +7,6 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class PrintService {
   constructor(private prisma: PrismaService) {}
 
-  create(createPrintDto: CreatePrintDto) {
-    createPrintDto.documentUrl = `https://images.vanbutselediane.com/${createPrintDto.title.replace(
-      /\s/gi,
-      '%20',
-    )}.jpg`;
-
-    return this.prisma.print.create({
-      data: createPrintDto,
-    });
-  }
-
-  async createFormat(printId: number, createFormatDto: CreateFormatDto) {
-    createFormatDto.print_id = printId;
-
-    return this.prisma.format.create({
-      data: createFormatDto,
-    });
-  }
-
   findAll() {
     return this.prisma.print.findMany({
       select: {
@@ -33,6 +14,9 @@ export class PrintService {
         title: true,
         documentUrl: true,
         formats: true,
+        description: true,
+        current_number: true,
+        initial_number: true,
       },
     });
   }

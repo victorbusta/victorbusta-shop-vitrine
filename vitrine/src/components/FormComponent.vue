@@ -25,39 +25,48 @@ const order = ref();
 const orderSend = ref(false);
 const orderSending = ref(false);
 
-function handleSubmit() {
-  orderSending.value = true;
+// function handleSubmit() {
+//   orderSending.value = true;
 
-  let formData: any = {};
-  fields.value.forEach((field) => {
-    formData[field.id] = field.value;
-  });
+//   let formData: any = {};
+//   fields.value.forEach((field) => {
+//     formData[field.id] = field.value;
+//   });
 
-  formData = {...formData, ...{formats_id: []}}
+//   formData = {...formData, ...{formats_id: []}}
 
-  checkoutStore.prints.forEach(print => {
-    formData.formats_id.push(print.format.id);
-  });
+//   checkoutStore.prints.forEach(print => {
+//     formData.formats_id.push(print.format.id);
+//   });
 
-  HTTP.post(props.apiEndPoint, formData).then(res => {
-    order.value = res.data;
-    orderSend.value = true;
-  });
+//   HTTP.post(props.apiEndPoint, formData).then(res => {
+//     order.value = res.data;
+//     orderSend.value = true;
+//   });
 
-  checkoutStore.resetPrints();
-}
+//   checkoutStore.resetPrints();
+// }
 </script>
 
 <template>
 
   <div v-if="!orderSending && !orderSend" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-  
+<!--   
     <form @submit.prevent="handleSubmit">
       <div class="formInput" v-for="field in fields" :key="field.id">
         <input :type="field.type" :id="field.id" v-model="field.value" :placeholder="field.label" required/>
         <hr>
       </div>
-    </form>
+
+      <input class="order" type="submit" value="Commander">
+
+    </form> -->
+
+    <div class="bottomNav">
+      <RouterLink to="/checkout" class="back">
+        <ArrowIcon style="width: 32px; height: 32px;" />
+      </RouterLink>
+    </div>
 
   </div>
 
@@ -101,20 +110,6 @@ hr {
   opacity: .5;
 }
 
-.order {
-  height: fit-content;
-  width: fit-content;
-  color: var(--color-foreground);
-  padding: 8px;
-  font-size: var(--font-size-medium-medium);
-  border: solid 1px var(--color-foreground);
-  width: fit-content;
-}
-
-.order:hover {
-  color: var(--color-background);
-  background-color: var(--color-foreground);
-}
 
 form > div {
   display: flex;
@@ -122,15 +117,32 @@ form > div {
   margin: 8px 4px;
 }
 
-.bottomNav {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.order {
+  height: fit-content;
+  width: fit-content;
+  padding: 8px;
+  font-size: var(--font-size-medium-medium);
+  border: solid 1px var(--color-foreground);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  width: fit-content;
+  font-family: 'CopperPlate Goth';
+}
+
+.order:hover {
+  color: var(--color-background);
+  background-color: var(--color-foreground);
 }
 
 .back {
   position: absolute;
   left: 0;
+}
+.bottomNav {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 8px 4px;
 }
 </style>

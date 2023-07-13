@@ -12,7 +12,6 @@ const articleCount = computed(() => checkoutStore.articleCount);
 checkoutStore.initData();
 
 // scroll indicator handling and paralax
-
 const scrollIndicatorWidth = ref(0);
 const scrollIndicatorStyle = ref('');
 
@@ -128,6 +127,7 @@ nav {
   display: flex;
   align-items: center;
   border-radius: 4px;
+  font-family: 'CopperPlate Goth';
 }
 
 .itemNb {

@@ -30,19 +30,20 @@ onMounted(() => {
 function handleIntersection(entries: IntersectionObserverEntry[]) {
   entries.forEach((entry: IntersectionObserverEntry) => {
     if (entry.isIntersecting) {
-      entry.target.classList.remove('over-top');
-      entry.target.classList.remove('under-bot');
-      loadingRef.value.classList.remove('over-top');
       loadingRef.value.classList.remove('under-bot');
+      entry.target.classList.remove('under-bot');
+      // loadingRef.value.classList.remove('over-top');
+      // entry.target.classList.remove('over-top');
 
       loadImage(entry.target as HTMLImageElement);
-    } else if (entry.boundingClientRect.top < 0) {
-      entry.target.classList.add('over-top');
-      loadingRef.value.classList.add('over-top');
     } else if (entry.boundingClientRect.bottom > window.innerHeight) {
       entry.target.classList.add('under-bot');
       loadingRef.value.classList.add('under-bot');
     }
+    // else if (entry.boundingClientRect.top < 0) {
+    //   entry.target.classList.add('over-top');
+    //   loadingRef.value.classList.add('over-top');
+    // }
   });
 }
 
@@ -58,14 +59,13 @@ const imgloader = (src: string) =>
 const loadImage = (imgElement: HTMLImageElement) => {
   imgloader(props.src).then((image) => {
     imgElement.srcset = (image as HTMLImageElement).src;
-    loadingRef.value.classList.add('hide');
+    loadingRef.value?.classList.add('hide');
   });
 }
 
 </script>
 
 <template>
-  
   <img :src="props.placeholder" :placeholder="props.placeholder" alt="" ref="imgRef">
   <div ref="loadingRef"><IconImgLoader/></div>
 </template>

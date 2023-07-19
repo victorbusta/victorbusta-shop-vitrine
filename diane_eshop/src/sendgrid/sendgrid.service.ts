@@ -12,14 +12,12 @@ export class SendGridService {
     sgMail.setApiKey(apiKey);
   }
 
-  async sendClient(order: Order, formats: any[], token: string) {
-    const link = `${process.env.APP_URL}order/${order.id}/verify?token=${token}`;
-
+  async sendClient(order: Order, formats: any[]) {
     const msg = {
       to: order.customer_email,
       from: process.env.SENDGRID_EMAIL as string,
       subject: `📸 Confirmation de commande n#${order.id} 📸`,
-      html: getVerifyMail(order, formats, link),
+      html: getVerifyMail(order, formats),
     };
     return sgMail.send(msg);
   }

@@ -4,6 +4,8 @@ import FormatComponent from './FormatComponent.vue';
 import IconClose from './icons/IconClose.vue'
 import IconCardMenu from './icons/IconCardMenu.vue';
 import { ref } from 'vue';
+import { delay } from '@/utils.animation';
+import ToastComponent from './ToastComponent.vue';
 
 defineProps({
   print: { 
@@ -13,12 +15,15 @@ defineProps({
 })
 
 const showInfo = ref(false);
+const showToast = ref(false);
 const formatRef = ref<any>(null);
 
 const addToCartForm = () => {
   if (formatRef.value) {
     formatRef.value.addToCart();
   }
+  showToast.value = true;
+  delay(1500).then(() => showToast.value = false)
 };
 </script>
 
@@ -58,6 +63,10 @@ const addToCartForm = () => {
           <h1>ajouter au panier</h1>
           <h1>ajouter au panier</h1>
         </div>
+
+        <ToastComponent v-if="showToast"/>
+        <!-- <ToastComponent/> -->
+
       </footer>
 
     </div>
@@ -90,7 +99,7 @@ const addToCartForm = () => {
     position: absolute;
     right: 0;
     top: 0;
-    width: 100%;
+    width: 50vw;
     height: 100vh;
     background-color: var(--color-background);
     transition: all .2s ease-in-out;

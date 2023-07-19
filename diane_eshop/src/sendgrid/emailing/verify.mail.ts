@@ -3,7 +3,6 @@ import { Order, Print } from '@prisma/client';
 export const getVerifyMail = (
   order: Order,
   formats: any[],
-  link: string,
 ): string => `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html data-editor-version="2" class="sg-campaigns" xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -155,13 +154,6 @@ export const getVerifyMail = (
       </tr>
     </tbody>
   </table><table class="module" role="module" data-type="code" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-muid="f71635df-9742-46a2-ae0d-bd6555abaea5.1">
-    <tbody>
-      <tr>
-        <td height="100%" valign="top" role="module-content"><h3 style="text-align: center; display:flex; justify-content:center;">
-    <span style="font-family: times new roman,times,serif">C'est validé ? click sur <a href="${link}">ce lien</a> et on se charge du reste !</span>
-</h3></td>
-      </tr>
-    </tbody>
   </table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-muid="ea2c96b2-616f-454c-9e16-7661b9626fae" data-mc-module-version="2019-10-22">
     <tbody>
       <tr>
@@ -209,13 +201,6 @@ ${addPrints(formats)}<div></div></div></td>
       </tr>
     </tbody>
   </table><table class="module" role="module" data-type="code" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-muid="f71635df-9742-46a2-ae0d-bd6555abaea5.1.1">
-    <tbody>
-      <tr>
-        <td height="100%" valign="top" role="module-content"><h3 style="text-align: center; display:flex; justify-content:center;">
-    <span style="font-family: times new roman,times,serif">C'est validé ? click sur <a href="${link}">ce lien</a> et on se charge du reste !</span>
-</h3></td>
-      </tr>
-    </tbody>
   </table><table class="module" role="module" data-type="spacer" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-muid="596f2c90-b2d5-4406-a182-2d83d8391d8b">
     <tbody>
       <tr>

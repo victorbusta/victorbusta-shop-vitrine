@@ -6,14 +6,14 @@ import { validatePassword } from 'bcrypt/password-hasher';
 import { SendGridService } from 'src/sendgrid/sendgrid.service';
 import { v4 as uuidv4 } from 'uuid';
 import { hashPassword } from 'bcrypt/password-hasher';
-import { Order } from '@prisma/client';
-import { Format } from 'src/resources/format/entities/format.entity';
+import { PaypalService } from 'src/paypal/paypal.service';
 
 @Injectable()
 export class OrderService {
   constructor(
     private prisma: PrismaService,
     private sendgrid: SendGridService,
+    private paypal: PaypalService,
   ) {}
 
   async shipping(id: number, token: string) {
@@ -103,14 +103,35 @@ export class OrderService {
     order.validation_token = hashPassword(validationToken);
     order.shipping = true;
 
+    for (const format of formats) {
+      await this.prisma.format
+        .findUniqueOrThrow({
+          where: { id: format.id },
+          select: { print: true },
+        })
+        .then(async (_format) => {
+          await this.prisma.print.update({
+            where: { id: _format.print.id },
+            data: { current_number: _format.print.current_number - 1 },
+          });
+        })
+        .catch(() => {
+          throw new HttpException('an error occured', 500);
+        });
+    }
+
     this.sendgrid.sendAdmin(order, formats, validationToken);
+    this.sendgrid.sendClient(order, formats);
 
     await this.prisma.order.update({
       where: { id: id },
       data: order,
     });
 
-    return '<h1 style="width:100vw;text-align:center;">Merci d\'avoir passé commande</h1>';
+    return `<div style="position:relative;top:50%;left:50%;transform: translate(-50%,-50%);">
+        <h1 style="text-align:center;">Merci d\'avoir passé commande</h1>
+        <h2 style="text-align:center;">Commande #${order.id}</h2>
+      </div>`;
   }
 
   async create(createOrderDto: CreateOrderDto) {
@@ -130,8 +151,15 @@ export class OrderService {
             },
           })
           .then((format) => {
-            if (format.print.current_number <= 0) {
-              throw new HttpException('no more prints left', 401);
+            const nbOfFormat = createOrderDto.formats?.filter(
+              (_format) => format.id === _format.id,
+            ).length as number;
+
+            if (format.print.current_number - nbOfFormat <= 0) {
+              throw new HttpException(
+                `le print "${format.print.title}" n'est plus disponible`,
+                410,
+              );
             }
 
             return { ...format, with_frame: _format.with_frame };
@@ -165,31 +193,44 @@ export class OrderService {
         format_id: format.id,
         with_frame: format.with_frame,
       });
-      return;
     });
 
-    await this.prisma.order_Format.createMany({ data: relations });
+    await this.prisma.order_Format.createMany({
+      data: relations,
+    });
 
-    await this.sendgrid.sendClient(order, formats, validationToken);
+    // get order total price
+    const getTotalPrice = () =>
+      formats.reduce(
+        (sum, format) =>
+          sum + (format.with_frame ? format.price_frame : format.price),
+        0,
+      );
 
-    for (const format of formats) {
-      await this.prisma.format
-        .findUniqueOrThrow({
-          where: { id: format.id },
-          select: { print: true },
-        })
-        .then(async (_format) => {
-          await this.prisma.print.update({
-            where: { id: _format.print.id },
-            data: { current_number: _format.print.current_number - 1 },
-          });
-        })
-        .catch(() => {
-          throw new HttpException('an error occured', 500);
-        });
-    }
+    return this.paypal.createPayment(order, getTotalPrice(), validationToken);
 
-    return order;
+    // for (const format of formats) {
+    //   await this.prisma.format
+    //     .findUniqueOrThrow({
+    //       where: { id: format.id },
+    //       select: { print: true },
+    //     })
+    //     .then(async (_format) => {
+    //       await this.prisma.print.update({
+    //         where: { id: _format.print.id },
+    //         data: { current_number: _format.print.current_number - 1 },
+    //       });
+    //     })
+    //     .catch(() => {
+    //       throw new HttpException('an error occured', 500);
+    //     });
+    // }
+
+    // return order;
+  }
+
+  paymentFailed(id: number) {
+    return `<h1 style="width:100vw;text-align:center;">Le payement pour la commande #${id} a échoué</h1>`;
   }
 
   findAll() {

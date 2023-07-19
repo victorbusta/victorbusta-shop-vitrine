@@ -21,14 +21,26 @@ export class OrderController {
 
   @Public()
   @Get(':id/verify')
-  verify(@Param('id') id: number, @Query('token') token: string) {
-    return this.orderService.verify(+id, token);
+  verify(
+    @Param('id') id: number,
+    @Query('veriftoken') veriftoken: string,
+    @Query('paymentId') paymentId: string,
+    @Query('token') token: string,
+    @Query('PayerID') payerId: string,
+  ) {
+    return this.orderService.verify(+id, veriftoken);
   }
 
   @Public()
   @Get(':id/shipping')
   shipping(@Param('id') id: number, @Query('token') token: string) {
     return this.orderService.shipping(+id, token);
+  }
+
+  @Public()
+  @Get(':id/payment')
+  paymentFailed(@Param('id') id: number) {
+    return this.orderService.paymentFailed(+id);
   }
 
   @Public()

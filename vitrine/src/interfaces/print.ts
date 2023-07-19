@@ -23,6 +23,9 @@ export interface OrderFormat {
   format: Format;
   qty: number;
   with_frame: boolean;
+  documentUrl: string;
+  title: string
+  original_qty: number;
 }
 
 export interface Order {

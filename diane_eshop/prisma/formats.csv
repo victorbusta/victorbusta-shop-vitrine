@@ -1,58 +1,57 @@
 print,taille,cadre,prix,prixcadre
-Attention à la marche en descendant du train,18 x 24,24 x 30,70,90
 Auberge,13 x 18,21 x 29.7,30,50
-Au bord de la flotte. les piafs se kiffent,20 x 29,30 x 40,100,120
+"Au bord de la flotte, les piafs se kiffent",20 x 29,30 x 40,100,120
+Attention à la marche en descendant du train,18 x 24,24 x 30,70,90
 Au loin,18 x 24,24 x 30,70,90
+Emboitements,20 X 29,30 X 40,100,120
+Soleil de plomb,18 x 24,24 x 30,70,90
+Découpes 2,18 x 24,24 x 30,70,90
+Fenetres-sur-le-Sprée,20 x 29,30 x 40,100,120
+Buée-et-chateau-,18 x 24,24 x 30,70,90
+image,13 x 18,21 x 29.7,30,50
+La femme au peignoir rouge,20 x 29,30 x 40,100,120
+Orange,20 x 29,30 x 40,100,120
 Autofocus,18 x 24,24 x 30,70,90
+Otto,18 x 24,24 x 30,70,90
+Flottements,20 x 29,30 x 40,100,120
+Reflets,20 x 29,30 x 40,100,120
 Avachi,13 x 18,21 x 29.7,30,50
+Cirque solaire,18 x 24,24 x 30,70,90
 Barakafrite,20 x 29,30 x 40,100,120
 Bleu azur,20 x 29,30 x 40,100,120
-Buée-et-chateau-,18 x 24,24 x 30,70,90
-Cirque solaire,18 x 24,24 x 30,70,90
-Cour royale,20 x 29,30 x 40,100,120
-Découpes 2,18 x 24,24 x 30,70,90
-Découpes,18 x 24,24 x 30,70,90
 Derivation,18 x 24,24 x 30,70,90
-Emboitements,20 X 29,30 X 40,100,120
 En aparté,18 x 24,24 x 30,70,90
+Cour royale,20 x 29,30 x 40,100,120
 Epoque,20 x 29,30 x 40,100,120
-Errance,20 x 29,30 x 40,100,120
-Exposition,18 x 24,24 x 30,70,90
-Fenetres-sur-le-Sprée,20 x 29,30 x 40,100,120
-Flottements,20 x 29,30 x 40,100,120
-Géométrie,20 x 29,30 x 40,100,120
-Hauteur couvrée,20 x 29,30 x 40,100,120
-Kinder,13 x 18,21 x 29.7,30,50
-La femme au peignoir rouge,20 x 29,30 x 40,100,120
 La fourrure et la godasse,13 x 18,21 x 29.7,30,50
+Exposition,18 x 24,24 x 30,70,90
+Errance,20 x 29,30 x 40,100,120
+Géométrie,20 x 29,30 x 40,100,120
 Le cadis du bord de la route,13 x 18,21 x 29.7,30,50
+manège,18 x 24,24 x 30,70,90
+Kinder,13 x 18,21 x 29.7,30,50
 Le grand bain,20 x 29,30 x 40,100,120
-Le manteau rouge de l_artiste,13 x 18,21 x 29.7,30,50
-Léna et la pomme,18 x 24,24 x 30,70,90
-Le reflet des oranges,13 x 18,21 x 29.7,30,50
-Les oranges sanguines,20 x 29,30 x 40,100,120
 L_homme au mur,20 x 29,30 x 40,100,120
+Le manteau rouge de l_artiste,13 x 18,21 x 29.7,30,50
+Structures parisiennes,18 x 24,24 x 30,70,90
+Léna et la pomme,18 x 24,24 x 30,70,90
+Les oranges sanguines,20 x 29,30 x 40,100,120
+Nouvelles siciliennes,20 x 29,30 x 40,100,120
+Le reflet des oranges,13 x 18,21 x 29.7,30,50
 Macadam,13 x 18,21 x 29.7,30,50
 Mes dames,18 x 24,24 x 30,70,90
-Métro parisien. odeurs poétiques,13 x 18,21 x 29.7,30,50
-Moteur berlinois,18 x 24,24 x 30,70,90
-Mousaillon,18 x 24,24 x 30,70,90
-Nouvelles siciliennes,20 x 29,30 x 40,100,120
-Orange,20 x 29,30 x 40,100,120
-Otto,18 x 24,24 x 30,70,90
-Parions sur nous,20 x 29,30 x 40,100,120
+Suspendu,13 x 18,21 x 29.7,30,50
 Plaine,20 x 29,30 x 40,100,120
 Reflections,20 x 29,30 x 40,100,120
-Reflets,20 x 29,30 x 40,100,120
+"Métro parisien, odeurs poétiques",13 x 18,21 x 29.7,30,50
+Moteur berlinois,18 x 24,24 x 30,70,90
 Scène de peche,20 x 29,30 x 40,100,120
-Séance-au-soleil,18 x 24,24 x 30,70,90
-Soleil de plomb,18 x 24,24 x 30,70,90
-Solitude,18 x 24,24 x 30,70,90
-Structures parisiennes,18 x 24,24 x 30,70,90
-Suspendu,13 x 18,21 x 29.7,30,50
 Tapis rouge,20 x 29,30 x 40,100,120
-Tendresse,20 x 29,30 x 40,100,120
+Mousaillon,18 x 24,24 x 30,70,90
+Parions sur nous,20 x 29,30 x 40,100,120
 Vieille Catane,20 x 29,30 x 40,100,120
-manège,18 x 24,24 x 30,70,90
-image,13 x 18,21 x 29.7,30,50
+Tendresse,20 x 29,30 x 40,100,120
+Séance-au-soleil,18 x 24,24 x 30,70,90
+Hauteur couvrée,20 x 29,30 x 40,100,120
 vue écarlate,20 x 29,30 x 40,100,120
+Solitude,18 x 24,24 x 30,70,90

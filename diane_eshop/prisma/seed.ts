@@ -25,11 +25,11 @@ async function main() {
 
   const prints = await readCSVFile('./prisma/formats.csv');
 
-  prints.forEach(async (print: any) => {
-    console.log(print.print);
-    const _print = await prisma.print.upsert({
-      where: { title: print.print },
-      create: {
+  prints.forEach(async (print: any, key: number) => {
+    console.log(print.print + ' ' + key);
+    const _print = await prisma.print.create({
+      data: {
+        id: key + 1,
         title: print.print.replaceAll('.', ','),
         description: 'exemplaire signé',
         documentUrl: `https://images.vanbutselediane.com/${print.print
@@ -38,7 +38,6 @@ async function main() {
         initial_number: 30,
         current_number: 30,
       },
-      update: {},
       select: { id: true },
     });
 

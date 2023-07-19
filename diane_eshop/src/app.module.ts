@@ -9,6 +9,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
 import { SendGridModule } from './sendgrid/sendgrid.module';
 import { FormatModule } from './resources/format/format.module';
+import { PaypalService } from './paypal/paypal.service';
+import { PaypalModule } from './paypal/paypal.module';
 
 @Module({
   imports: [
@@ -18,6 +20,7 @@ import { FormatModule } from './resources/format/format.module';
     AuthModule,
     SendGridModule,
     FormatModule,
+    PaypalModule,
   ],
   controllers: [AppController],
   providers: [
@@ -26,6 +29,7 @@ import { FormatModule } from './resources/format/format.module';
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
+    PaypalService,
   ],
 })
 export class AppModule {}

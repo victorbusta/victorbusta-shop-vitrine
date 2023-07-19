@@ -7,6 +7,19 @@ export const useCheckoutStore = defineStore({
     formats: [] as OrderFormat[],
   }),
   getters: {
+    articles(state) {
+      const orderAble: {id: number, with_frame: boolean}[] = []; 
+
+      state.formats.forEach(format => {
+        let qty = format.qty;
+
+        while (0 !== (qty--)) {
+          orderAble.push({id: format.format.id, with_frame: format.with_frame});
+        }
+      });
+
+      return orderAble;
+    },
     articleCount(state) {
       let articleCount = 0;
 
@@ -23,8 +36,8 @@ export const useCheckoutStore = defineStore({
 
       sessionStorage.setItem('formats', JSON.stringify(this.formats));
     },
-    getStoredNb(this: any, formatId: number) {      
-      return this.formats.filter((_format: OrderFormat) => _format.format.id === formatId)[0]?.qty;
+    getStored(this: any, formatId: number) {      
+      return this.formats.filter((_format: OrderFormat) => _format.format.id === formatId)[0];
     },
     initData() {
       // Check if there is data stored in sessionStorage

@@ -123,6 +123,7 @@ nav {
 .navlink > h2 {
   height: 100%;
   width: 100%;
+  font-size: 14px;
   padding: 0 8px;
   display: flex;
   align-items: center;
